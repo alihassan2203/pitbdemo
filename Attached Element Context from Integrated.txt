@@ -1,0 +1,1038 @@
+Attached Element Context from Integrated Browser
+
+Element: label.form-label
+
+HTML Path:
+div#schoolAddModal.modal-overlay.open > div.modal.modal-lg > div.modal-body > div#schoolAddPanels > div#stab-0.ftab-content.active > div.form-section > div.form-grid > div.form-group > label.form-label
+
+Attributes:
+- class: form-label
+
+Computed Styles:
+- margin: 0px 0px 0px 0px
+- padding: 0px 0px 0px 0px
+- --accent: #e8720c
+- --accent-light: #fff3e9
+- --bg: #f0f4f9
+- --border: #dde4ef
+- --card: #ffffff
+- --danger: #c0392b
+- --danger-bg: #fdecea
+- --font-alt: 'Poppins', sans-serif
+- --font-main: 'Inter', sans-serif
+- --primary: #1a4f8a
+- --primary-dark: #123668
+- --primary-light: #e8f0fb
+- --radius: 10px
+- --radius-lg: 16px
+- --shadow-lg: 0 12px 40px rgba(26,79,138,0.16)
+- --shadow-md: 0 4px 20px rgba(26,79,138,0.11)
+- --shadow-sm: 0 1px 4px rgba(26,79,138,0.07)
+- --sidebar-active: #ffffff
+- --sidebar-active-bg: #18926D
+- --sidebar-bg: #FFFFFF
+- --sidebar-hover: rgba(0,0,0,0.08)
+- --sidebar-text: #333333
+- --sidebar-w: 260px
+- --success: #1a8a5a
+- --success-bg: #e6f7f0
+- --text-muted: #8fa3bc
+- --text-primary: #0f1e35
+- --text-secondary: #4a6080
+- --topbar-h: 64px
+- --transition: 0.22s cubic-bezier(0.4,0,0.2,1)
+- --warning: #d4820a
+- --warning-bg: #fff8e6
+- -electron-corner-smoothing: none
+- -webkit-border-horizontal-spacing: 0px
+- -webkit-border-image: none
+- -webkit-border-vertical-spacing: 0px
+- -webkit-box-align: stretch
+- -webkit-box-decoration-break: slice
+- -webkit-box-direction: normal
+- -webkit-box-flex: 0
+- -webkit-box-ordinal-group: 1
+- -webkit-box-orient: horizontal
+- -webkit-box-pack: start
+- -webkit-box-reflect: none
+- -webkit-font-smoothing: auto
+- -webkit-line-break: auto
+- -webkit-line-clamp: none
+- -webkit-locale: "en"
+- -webkit-mask-box-image-outset: 0
+- -webkit-mask-box-image-repeat: stretch
+- -webkit-mask-box-image-slice: 0 fill
+- -webkit-mask-box-image-source: none
+- -webkit-mask-box-image-width: auto
+- -webkit-mask-position-x: 0%
+- -webkit-mask-position-y: 0%
+- -webkit-perspective-origin-x: 
+- -webkit-perspective-origin-y: 
+- -webkit-rtl-ordering: logical
+- -webkit-ruby-position: before
+- -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18)
+- -webkit-text-combine: none
+- -webkit-text-decorations-in-effect: none
+- -webkit-text-fill-color: rgb(74, 96, 128)
+- -webkit-text-orientation: vertical-right
+- -webkit-text-security: none
+- -webkit-text-stroke-color: rgb(74, 96, 128)
+- -webkit-text-stroke-width: 0px
+- -webkit-transform-origin-x: 
+- -webkit-transform-origin-y: 
+- -webkit-transform-origin-z: 
+- -webkit-user-drag: auto
+- -webkit-user-modify: read-only
+- -webkit-writing-mode: horizontal-tb
+- accent-color: auto
+- align-content: normal
+- align-items: normal
+- align-self: auto
+- alignment-baseline: auto
+- all: 
+- anchor-name: none
+- anchor-scope: none
+- animation-composition: replace
+- animation-delay: 0s
+- animation-direction: normal
+- animation-duration: 0s
+- animation-fill-mode: none
+- animation-iteration-count: 1
+- animation-name: none
+- animation-play-state: running
+- animation-range-end: normal
+- animation-range-start: normal
+- animation-timeline: auto
+- animation-timing-function: ease
+- app-region: none
+- appearance: none
+- aspect-ratio: auto
+- backdrop-filter: none
+- backface-visibility: visible
+- background-attachment: scroll
+- background-blend-mode: normal
+- background-clip: border-box
+- background-color: rgba(0, 0, 0, 0)
+- background-image: none
+- background-origin: padding-box
+- background-position-x: 0%
+- background-position-y: 0%
+- background-repeat: repeat
+- background-size: auto
+- baseline-shift: 0px
+- baseline-source: auto
+- block-size: 14.9333px
+- border-block-end-color: rgb(74, 96, 128)
+- border-block-end-style: none
+- border-block-end-width: 0px
+- border-block-start-color: rgb(74, 96, 128)
+- border-block-start-style: none
+- border-block-start-width: 0px
+- border-bottom-color: rgb(74, 96, 128)
+- border-bottom-left-radius: 0px
+- border-bottom-right-radius: 0px
+- border-bottom-style: none
+- border-bottom-width: 0px
+- border-collapse: separate
+- border-end-end-radius: 0px
+- border-end-start-radius: 0px
+- border-image-outset: 0
+- border-image-repeat: stretch
+- border-image-slice: 100%
+- border-image-source: none
+- border-image-width: 1
+- border-inline-end-color: rgb(74, 96, 128)
+- border-inline-end-style: none
+- border-inline-end-width: 0px
+- border-inline-start-color: rgb(74, 96, 128)
+- border-inline-start-style: none
+- border-inline-start-width: 0px
+- border-left-color: rgb(74, 96, 128)
+- border-left-style: none
+- border-left-width: 0px
+- border-right-color: rgb(74, 96, 128)
+- border-right-style: none
+- border-right-width: 0px
+- border-start-end-radius: 0px
+- border-start-start-radius: 0px
+- border-top-color: rgb(74, 96, 128)
+- border-top-left-radius: 0px
+- border-top-right-radius: 0px
+- border-top-style: none
+- border-top-width: 0px
+- bottom: auto
+- box-decoration-break: slice
+- box-shadow: none
+- box-sizing: border-box
+- break-after: auto
+- break-before: auto
+- break-inside: auto
+- buffered-rendering: auto
+- caption-side: top
+- caret-animation: auto
+- caret-color: rgb(74, 96, 128)
+- clear: none
+- clip: auto
+- clip-path: none
+- clip-rule: nonzero
+- color: rgb(74, 96, 128)
+- color-interpolation: srgb
+- color-interpolation-filters: linearrgb
+- color-rendering: auto
+- color-scheme: normal
+- column-count: auto
+- column-fill: balance
+- column-gap: normal
+- column-rule-color: rgb(74, 96, 128)
+- column-rule-style: none
+- column-rule-width: 0px
+- column-span: none
+- column-width: auto
+- contain: none
+- contain-intrinsic-block-size: none
+- contain-intrinsic-height: none
+- contain-intrinsic-inline-size: none
+- contain-intrinsic-width: none
+- container-name: none
+- container-type: normal
+- content: normal
+- content-visibility: visible
+- corner-bottom-left-shape: round
+- corner-bottom-right-shape: round
+- corner-end-end-shape: round
+- corner-end-start-shape: round
+- corner-start-end-shape: round
+- corner-start-start-shape: round
+- corner-top-left-shape: round
+- corner-top-right-shape: round
+- counter-increment: none
+- counter-reset: none
+- counter-set: none
+- cursor: default
+- cx: 0px
+- cy: 0px
+- d: none
+- direction: ltr
+- display: block
+- dominant-baseline: auto
+- dynamic-range-limit: no-limit
+- empty-cells: show
+- field-sizing: fixed
+- fill: rgb(0, 0, 0)
+- fill-opacity: 1
+- fill-rule: nonzero
+- filter: none
+- flex-basis: auto
+- flex-direction: row
+- flex-grow: 0
+- flex-shrink: 1
+- flex-wrap: nowrap
+- float: none
+- flood-color: rgb(0, 0, 0)
+- flood-opacity: 1
+- font-family: Inter, sans-serif
+- font-feature-settings: normal
+- font-kerning: auto
+- font-optical-sizing: auto
+- font-palette: normal
+- font-size: 12px
+- font-size-adjust: none
+- font-stretch: 100%
+- font-style: normal
+- font-synthesis-small-caps: auto
+- font-synthesis-style: auto
+- font-synthesis-weight: auto
+- font-variant-alternates: normal
+- font-variant-caps: normal
+- font-variant-east-asian: normal
+- font-variant-emoji: normal
+- font-variant-ligatures: normal
+- font-variant-numeric: normal
+- font-variant-position: normal
+- font-variation-settings: normal
+- font-weight: 600
+- forced-color-adjust: auto
+- grid-auto-columns: auto
+- grid-auto-flow: row
+- grid-auto-rows: auto
+- grid-column-end: auto
+- grid-column-start: auto
+- grid-row-end: auto
+- grid-row-start: auto
+- grid-template-areas: none
+- grid-template-columns: none
+- grid-template-rows: none
+- height: 14.9333px
+- hyphenate-character: auto
+- hyphenate-limit-chars: auto
+- hyphens: manual
+- image-orientation: from-image
+- image-rendering: auto
+- initial-letter: normal
+- inline-size: 273.6px
+- inset-block-end: auto
+- inset-block-start: auto
+- inset-inline-end: auto
+- inset-inline-start: auto
+- interactivity: auto
+- interest-delay-end: normal
+- interest-delay-start: normal
+- interpolate-size: numeric-only
+- isolation: auto
+- justify-content: normal
+- justify-items: normal
+- justify-self: auto
+- left: auto
+- letter-spacing: normal
+- lighting-color: rgb(255, 255, 255)
+- line-break: auto
+- line-height: normal
+- list-style-image: none
+- list-style-position: outside
+- list-style-type: disc
+- margin-block-end: 0px
+- margin-block-start: 0px
+- margin-inline-end: 0px
+- margin-inline-start: 0px
+- marker-end: none
+- marker-mid: none
+- marker-start: none
+- mask-clip: border-box
+- mask-composite: add
+- mask-image: none
+- mask-mode: match-source
+- mask-origin: border-box
+- mask-repeat: repeat
+- mask-size: auto
+- mask-type: luminance
+- math-depth: 0
+- math-shift: normal
+- math-style: normal
+- max-block-size: none
+- max-height: none
+- max-inline-size: none
+- max-width: none
+- min-block-size: auto
+- min-height: auto
+- min-inline-size: auto
+- min-width: auto
+- mix-blend-mode: normal
+- object-fit: fill
+- object-position: 50% 50%
+- object-view-box: none
+- offset-anchor: auto
+- offset-distance: 0px
+- offset-path: none
+- offset-position: normal
+- offset-rotate: auto 0deg
+- opacity: 1
+- order: 0
+- orphans: 2
+- outline-color: rgb(74, 96, 128)
+- outline-offset: 0px
+- outline-style: none
+- outline-width: 0px
+- overflow-anchor: auto
+- overflow-block: visible
+- overflow-clip-margin: 0px
+- overflow-inline: visible
+- overflow-wrap: normal
+- overflow-x: visible
+- overflow-y: visible
+- overlay: none
+- overscroll-behavior-block: auto
+- overscroll-behavior-inline: auto
+- overscroll-behavior-x: auto
+- overscroll-behavior-y: auto
+- padding-block-end: 0px
+- padding-block-start: 0px
+- padding-inline-end: 0px
+- padding-inline-start: 0px
+- page: auto
+- page-orientation: 
+- paint-order: normal
+- perspective: none
+- perspective-origin: 136.8px 7.46667px
+- pointer-events: auto
+- position: static
+- position-anchor: auto
+- position-area: none
+- position-try-fallbacks: none
+- position-try-order: normal
+- position-visibility: anchors-visible
+- print-color-adjust: economy
+- quotes: auto
+- r: 0px
+- reading-flow: normal
+- reading-order: 0
+- resize: none
+- right: auto
+- rotate: none
+- row-gap: normal
+- ruby-align: space-around
+- ruby-position: over
+- rx: auto
+- ry: auto
+- scale: none
+- scroll-behavior: auto
+- scroll-initial-target: none
+- scroll-margin-block-end: 0px
+- scroll-margin-block-start: 0px
+- scroll-margin-bottom: 0px
+- scroll-margin-inline-end: 0px
+- scroll-margin-inline-start: 0px
+- scroll-margin-left: 0px
+- scroll-margin-right: 0px
+- scroll-margin-top: 0px
+- scroll-marker-group: none
+- scroll-padding-block-end: auto
+- scroll-padding-block-start: auto
+- scroll-padding-bottom: auto
+- scroll-padding-inline-end: auto
+- scroll-padding-inline-start: auto
+- scroll-padding-left: auto
+- scroll-padding-right: auto
+- scroll-padding-top: auto
+- scroll-snap-align: none
+- scroll-snap-stop: normal
+- scroll-snap-type: none
+- scroll-target-group: none
+- scroll-timeline-axis: block
+- scroll-timeline-name: none
+- scrollbar-color: auto
+- scrollbar-gutter: auto
+- scrollbar-width: auto
+- shape-image-threshold: 0
+- shape-margin: 0px
+- shape-outside: none
+- shape-rendering: auto
+- size: 
+- speak: normal
+- stop-color: rgb(0, 0, 0)
+- stop-opacity: 1
+- stroke: none
+- stroke-dasharray: none
+- stroke-dashoffset: 0px
+- stroke-linecap: butt
+- stroke-linejoin: miter
+- stroke-miterlimit: 4
+- stroke-opacity: 1
+- stroke-width: 1px
+- tab-size: 8
+- table-layout: auto
+- text-align: start
+- text-align-last: auto
+- text-anchor: start
+- text-autospace: no-autospace
+- text-box-edge: auto
+- text-box-trim: none
+- text-combine-upright: none
+- text-decoration-color: rgb(74, 96, 128)
+- text-decoration-line: none
+- text-decoration-skip-ink: auto
+- text-decoration-style: solid
+- text-decoration-thickness: auto
+- text-emphasis-color: rgb(74, 96, 128)
+- text-emphasis-position: over
+- text-emphasis-style: none
+- text-indent: 0px
+- text-orientation: mixed
+- text-overflow: clip
+- text-rendering: auto
+- text-shadow: none
+- text-size-adjust: auto
+- text-spacing-trim: normal
+- text-transform: none
+- text-underline-offset: auto
+- text-underline-position: auto
+- text-wrap-mode: wrap
+- text-wrap-style: auto
+- timeline-scope: none
+- top: auto
+- touch-action: auto
+- transform: none
+- transform-box: view-box
+- transform-origin: 136.8px 7.46667px
+- transform-style: flat
+- transition-behavior: normal
+- transition-delay: 0s
+- transition-duration: 0s
+- transition-property: all
+- transition-timing-function: ease
+- translate: none
+- unicode-bidi: normal
+- user-select: auto
+- vector-effect: none
+- vertical-align: baseline
+- view-timeline-axis: block
+- view-timeline-inset: auto
+- view-timeline-name: none
+- view-transition-class: none
+- view-transition-group: normal
+- view-transition-name: none
+- visibility: visible
+- white-space-collapse: collapse
+- widows: 2
+- width: 273.6px
+- will-change: auto
+- word-break: normal
+- word-spacing: 0px
+- writing-mode: horizontal-tb
+- x: 0px
+- y: 0px
+- z-index: auto
+- zoom: 1
+
+Dimensions:
+- top: 383px
+- left: 48px
+- width: 274px
+- height: 15px
+
+Outer HTML:
+```html
+<label class="form-label">Union Council <span class="req">*</span></label>
+```
+
+Full Computed CSS:
+```css
+
+/* Matched Rule from user-agent */
+label {
+  cursor: default;
+}
+
+/* Matched Rule from regular */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Matched Rule from regular */
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Inherited from ancestor level 1 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 1 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  column-gap: 5px;
+}
+
+/* Inherited from ancestor level 2 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 2 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 16px;
+  column-gap: 20px;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+.form-grid {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Inherited from ancestor level 3 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 3 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 3 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 3 (regular) */
+.form-section {
+  margin-bottom: 26px;
+  margin-bottom: 26px;
+}
+
+/* Inherited from ancestor level 4 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 4 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 4 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 4 (regular) */
+.ftab-content {
+  display: none;
+  padding: 22px 24px;
+  display: none;
+  padding-top: 22px;
+  padding-right: 24px;
+  padding-bottom: 22px;
+  padding-left: 24px;
+}
+
+/* Inherited from ancestor level 4 (regular) */
+.ftab-content.active {
+  display: block;
+  display: block;
+}
+
+/* Inherited from ancestor level 5 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 5 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 5 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 6 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 6 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 6 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 6 (regular) */
+.modal-body {
+  overflow-y: auto;
+  flex: 1;
+  overflow-y: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+}
+
+/* Inherited from ancestor level 7 (inline) */
+element {
+max-width:1000px
+}
+
+/* Inherited from ancestor level 7 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 7 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 7 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 7 (regular) */
+.modal {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.22s cubic-bezier(0.34,1.4,0.64,1);
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation-duration: 0.22s;
+  animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-name: slideUp;
+  animation-timeline: auto;
+  animation-range-start: normal;
+  animation-range-end: normal;
+}
+
+/* Inherited from ancestor level 7 (regular) */
+.modal.modal-lg {
+  max-width: 960px;
+  max-width: 960px;
+}
+
+/* Inherited from ancestor level 8 (user-agent) */
+div {
+  display: block;
+}
+
+/* Inherited from ancestor level 8 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 8 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 8 (regular) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,30,53,0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.18s ease;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-repeat: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: rgba(15, 30, 53, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  padding-left: 24px;
+  animation-duration: 0.18s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-name: fadeIn;
+  animation-timeline: auto;
+  animation-range-start: normal;
+  animation-range-end: normal;
+}
+
+/* Inherited from ancestor level 8 (regular) */
+.modal-overlay.open {
+  display: flex;
+  display: flex;
+}
+
+/* Inherited from ancestor level 9 (inline) */
+element {
+overflow: hidden;
+}
+
+/* Inherited from ancestor level 9 (user-agent) */
+body {
+  display: block;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+/* Inherited from ancestor level 9 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 9 (regular) */
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Inherited from ancestor level 10 (user-agent) */
+html {
+  display: block;
+}
+
+/* Inherited from ancestor level 10 (user-agent) */
+:root {
+  view-transition-name: root;
+}
+
+/* Inherited from ancestor level 10 (regular) */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 10 (regular) */
+html {
+  font-size: 14px;
+  font-size: 14px;
+}
+
+/* Inherited from ancestor level 10 (regular) */
+:root {
+  --primary: #1a4f8a;
+  --primary-dark: #123668;
+  --primary-light: #e8f0fb;
+  --accent: #e8720c;
+  --accent-light: #fff3e9;
+  --success: #1a8a5a;
+  --success-bg: #e6f7f0;
+  --danger: #c0392b;
+  --danger-bg: #fdecea;
+  --warning: #d4820a;
+  --warning-bg: #fff8e6;
+  --sidebar-bg: #FFFFFF;
+  --sidebar-text: #333333;
+  --sidebar-active: #ffffff;
+  --sidebar-hover: rgba(0,0,0,0.08);
+  --sidebar-active-bg: #18926D;
+  --bg: #f0f4f9;
+  --card: #ffffff;
+  --border: #dde4ef;
+  --text-primary: #0f1e35;
+  --text-secondary: #4a6080;
+  --text-muted: #8fa3bc;
+  --shadow-sm: 0 1px 4px rgba(26,79,138,0.07);
+  --shadow-md: 0 4px 20px rgba(26,79,138,0.11);
+  --shadow-lg: 0 12px 40px rgba(26,79,138,0.16);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --sidebar-w: 260px;
+  --topbar-h: 64px;
+  --font-main: 'Inter', sans-serif;
+  --font-alt: 'Poppins', sans-serif;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  --primary: #1a4f8a;
+  --primary-dark: #123668;
+  --primary-light: #e8f0fb;
+  --accent: #e8720c;
+  --accent-light: #fff3e9;
+  --success: #1a8a5a;
+  --success-bg: #e6f7f0;
+  --danger: #c0392b;
+  --danger-bg: #fdecea;
+  --warning: #d4820a;
+  --warning-bg: #fff8e6;
+  --sidebar-bg: #FFFFFF;
+  --sidebar-text: #333333;
+  --sidebar-active: #ffffff;
+  --sidebar-hover: rgba(0,0,0,0.08);
+  --sidebar-active-bg: #18926D;
+  --bg: #f0f4f9;
+  --card: #ffffff;
+  --border: #dde4ef;
+  --text-primary: #0f1e35;
+  --text-secondary: #4a6080;
+  --text-muted: #8fa3bc;
+  --shadow-sm: 0 1px 4px rgba(26,79,138,0.07);
+  --shadow-md: 0 4px 20px rgba(26,79,138,0.11);
+  --shadow-lg: 0 12px 40px rgba(26,79,138,0.16);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --sidebar-w: 260px;
+  --topbar-h: 64px;
+  --font-main: 'Inter', sans-serif;
+  --font-alt: 'Poppins', sans-serif;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+```
