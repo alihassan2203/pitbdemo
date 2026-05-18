@@ -5707,7 +5707,7 @@ let hrData = [
 ];
 try { const s=sessionStorage.getItem('hrData'); if(s){const p=JSON.parse(s);if(Array.isArray(p)&&p.length>0)hrData=p;} } catch(e){}
 let hrTabIdx=0, currentHREditId=null;
-let _hrAcadCount=1,_hrProfCount=1,_hrPromoCount=1,_hrPostingCount=1,_hrTrainCount=1,_hrDiscCount=1;
+let _hrAcadCount=1,_hrProfCount=1,_hrPromoCount=1,_hrPostingCount=1,_hrTrainCount=1,_hrTrainDataCount=1,_hrDiscCount=1;
 
 const hrTabs=['Personal Info','Govt Service','FDE Employment','Current Posting','Family Info','Qualifications','Career History','Training & Disciplinary'];
 const _hrBPS=Array.from({length:22},(_,i)=>`BPS-${i+1}`);
@@ -5736,10 +5736,21 @@ function hrTab0(){
       <div class="form-group"><label class="form-label">Religion (Specify)</label><input class="form-control" id="hr_religionOther" placeholder="Please specify"></div>
     </div>
     <div class="form-group"><label class="form-label">Blood Group</label><select class="form-control" id="hr_blood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
-    <div class="form-group span-2"><label class="form-label">Permanent Address</label><input class="form-control" id="hr_addrPerm" placeholder="Permanent home address"></div>
-    <div class="form-group span-2"><label class="form-label">Temporary / Postal Address</label><input class="form-control" id="hr_addrTemp" placeholder="Temporary or current address"></div>
-    <div class="form-group"><label class="form-label">Province <span class="req">*</span></label><select class="form-control" id="hr_province" onchange="hrFillDistricts()">${_hrProvinces.map(p=>`<option>${p}</option>`).join('')}</select></div>
-    <div class="form-group"><label class="form-label">District <span class="req">*</span></label><select class="form-control" id="hr_district"><option value="">-- Select Province First --</option></select></div>
+    <div class="form-group span-2" style="margin-bottom:4px"><label class="form-label" style="font-weight:700;color:var(--primary);font-size:13px;text-transform:uppercase;letter-spacing:.4px">Permanent Address</label></div>
+    <div class="form-group"><label class="form-label">Education Sector</label><select class="form-control" id="hr_permSector"><option value="">Select Sector</option><option>Urban 1</option><option>Urban 2</option><option>Sihala</option><option>Nilore</option><option>Barakahu</option><option>Tarnol</option></select></div>
+    <div class="form-group"><label class="form-label">Sub-Sector / Street</label><input class="form-control" id="hr_permSubSector" placeholder="e.g. Street 4, I-8/2"></div>
+    <div class="form-group"><label class="form-label">Village</label><input class="form-control" id="hr_permVillage" placeholder="Village name"></div>
+    <div class="form-group"><label class="form-label">Society / Mohalla</label><input class="form-control" id="hr_permSociety" placeholder="Society or mohalla"></div>
+    <div class="form-group span-2" style="margin-bottom:4px;padding-top:10px;border-top:1.5px dashed var(--border)">
+      <label class="form-label" style="font-weight:700;color:var(--primary);font-size:13px;text-transform:uppercase;letter-spacing:.4px">Temporary / Postal Address</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;margin-left:18px;cursor:pointer;font-size:12.5px;color:var(--text-muted)"><input type="checkbox" id="hr_sameAsPerm" onchange="hrCopyPermToTemp()" style="accent-color:var(--primary);width:14px;height:14px"> Same as Permanent Address</label>
+    </div>
+    <div class="form-group"><label class="form-label">Education Sector</label><select class="form-control" id="hr_tempSector"><option value="">Select Sector</option><option>Urban 1</option><option>Urban 2</option><option>Sihala</option><option>Nilore</option><option>Barakahu</option><option>Tarnol</option></select></div>
+    <div class="form-group"><label class="form-label">Sub-Sector / Street</label><input class="form-control" id="hr_tempSubSector" placeholder="e.g. Street 4, I-8/2"></div>
+    <div class="form-group"><label class="form-label">Village</label><input class="form-control" id="hr_tempVillage" placeholder="Village name"></div>
+    <div class="form-group"><label class="form-label">Society / Mohalla</label><input class="form-control" id="hr_tempSociety" placeholder="Society or mohalla"></div>
+    <div class="form-group"><label class="form-label">Domicile Province <span class="req">*</span></label><select class="form-control" id="hr_province" onchange="hrFillDistricts()">${_hrProvinces.map(p=>`<option>${p}</option>`).join('')}</select></div>
+    <div class="form-group"><label class="form-label">Domicile District <span class="req">*</span></label><select class="form-control" id="hr_district"><option value="">-- Select Province First --</option></select></div>
     <div class="form-group"><label class="form-label">CNIC <span class="req">*</span></label><input class="form-control" id="hr_cnic" placeholder="XXXXX-XXXXXXX-X" maxlength="15"></div>
     <div class="form-group"><label class="form-label">Mobile No <span class="req">*</span></label><input class="form-control" type="tel" id="hr_mobile" placeholder="03XX-XXXXXXX"></div>
     <div class="form-group"><label class="form-label">Email</label><input class="form-control" type="email" id="hr_email" placeholder="name@fde.edu.pk"></div>
@@ -5848,7 +5859,7 @@ function hrTab4(){
       </select>
     </div>
     <div class="conditional-block" id="hrSpouseEmpBlock" style="padding:0;border:none;background:none">
-      <div class="form-group"><label class="form-label">Employer Name</label><select class="form-control" id="hr_spouseEmployer"><option value="">Select</option><option>Federal Govt</option><option>Provincial Govt</option><option>Semi Govt</option><option>Corporations</option><option>Authority</option><option>Autonomous bodies</option><option>Private</option></select></div>
+      <div class="form-group"><label class="form-label">Employer Status</label><select class="form-control" id="hr_spouseEmployer"><option value="">Select</option><option>Federal Govt</option><option>Provincial Govt</option><option>Semi Govt</option><option>Corporations</option><option>Authority</option><option>Autonomous bodies</option><option>Private</option></select></div>
       <div class="form-group" style="margin-top:12px"><label class="form-label">Department / Employer of Spouse</label><input class="form-control" id="hr_spouseDept" placeholder="Department or employer name"></div>
     </div>
   </div></div>
@@ -5864,6 +5875,7 @@ function hrAcadRowHTML(idx){
     <div class="form-grid cols-2">
       <div class="form-group"><label class="form-label">Degree / Certificate</label><select class="form-control" id="hr_aD_${idx}" onchange="hrToggleAcadFields('${idx}',this.value)">${acadDegs}</select></div>
       <div class="form-group" id="hr_aGrp_${idx}" style="display:none"><label class="form-label">Group</label><select class="form-control" id="hr_aG_${idx}"><option value="">Select</option><option>Science</option><option>Arts</option><option>Computer Science</option></select></div>
+      <div class="form-group" id="hr_aDipSub_${idx}" style="display:none"><label class="form-label">Subject</label><select class="form-control" id="hr_aDS_${idx}"><option value="">Select</option><option>English</option><option>Urdu</option><option>Mathematics</option><option>Others</option></select></div>
       <div class="form-group" id="hr_aSub_${idx}"><label class="form-label">Major Subject</label><select class="form-control" id="hr_aS_${idx}"><option value="">Select</option><option>English</option><option>Urdu</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Computer Science</option><option>Commerce</option><option>Economics</option><option>History</option><option>Geography</option><option>Islamic Studies</option><option>Pakistan Studies</option><option>Arts</option><option>Science</option><option>Other</option></select></div>
       <div class="form-group"><label class="form-label">Country</label><select class="form-control" id="hr_aC_${idx}" onchange="hrCtryChange('hr_aB_${idx}','hr_aBT_${idx}',this.value)"><option>Pakistan</option><option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Germany</option><option>China</option><option>Turkey</option><option>Saudi Arabia</option><option>UAE</option><option>Other</option></select></div>
       <div class="form-group" id="hr_aB_${idx}"><label class="form-label">Board / University</label><select class="form-control">${boards}</select></div>
@@ -5925,21 +5937,38 @@ function hrTab6(){
 }
 
 // ─── TAB 7: Training & Disciplinary ───
+// Professional Training History — Training Area, Type (Country if Foreign), Mode, From/To dates, Institute
 function hrTrainRowHTML(idx){
   const areaOpts=_hrTrainAreas.map(a=>`<option>${a}</option>`).join('');
   const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrTrainRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
   return `<div id="hrTrainRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
     <div class="form-grid cols-2">
       <div class="form-group"><label class="form-label">Training Area</label><select class="form-control">${areaOpts}</select></div>
-      <div class="form-group span-2"><label class="form-label">Name of Training</label><input class="form-control" id="hr_tName_${idx}" placeholder="Training name"></div>
-      <div class="form-group"><label class="form-label">Type of Training</label><select class="form-control" id="hr_tType_${idx}" onchange="schToggle('hrTCtry_${idx}',this.value==='Foreign/International')"><option>Domestic/National</option><option>Foreign/International</option></select></div>
-      <div class="conditional-block" id="hrTCtry_${idx}" style="padding:0;border:none;background:none"><div class="form-group"><label class="form-label">Country</label><input class="form-control" id="hr_tCtry_${idx}" placeholder="Search country..."></div></div>
+      <div class="form-group"><label class="form-label">Type of Training</label><select class="form-control" id="hr_ptType_${idx}" onchange="schToggle('hrPTCtry_${idx}',this.value==='Foreign/International')"><option>Domestic/National</option><option>Foreign/International</option></select></div>
+      <div class="conditional-block" id="hrPTCtry_${idx}" style="padding:0;border:none;background:none"><div class="form-group"><label class="form-label">Country</label><input class="form-control" placeholder="Country name"></div></div>
+      <div class="form-group"><label class="form-label">Mode of Training</label><select class="form-control"><option>Physical</option><option>Online</option><option>Hybrid</option></select></div>
+      <div class="form-group"><label class="form-label">Training Date (From)</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Training Date (To)</label><input class="form-control" type="date"></div>
+      <div class="form-group span-2"><label class="form-label">Name of Training Institute</label><input class="form-control" placeholder="Training institute name" maxlength="100"></div>
+    </div></div>`;
+}
+// Training Data — independent section with full fields
+function hrTrainDataRowHTML(idx){
+  const areaOpts=_hrTrainAreas.map(a=>`<option>${a}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrTrainDataRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrTrainDataRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Training Area</label><select class="form-control">${areaOpts}</select></div>
+      <div class="form-group"><label class="form-label">Name of Training</label><input class="form-control" id="hr_tdName_${idx}" placeholder="Name of training program"></div>
+      <div class="form-group span-2"><label class="form-label">Name of Training Institute / Organization</label><input class="form-control" placeholder="Institute or organization name" maxlength="100"></div>
+      <div class="form-group"><label class="form-label">Type of Training</label><select class="form-control" id="hr_tdType_${idx}" onchange="schToggle('hrTDCtry_${idx}',this.value==='Foreign/International')"><option>Domestic/National</option><option>Foreign/International</option></select></div>
+      <div class="conditional-block" id="hrTDCtry_${idx}" style="padding:0;border:none;background:none"><div class="form-group"><label class="form-label">Country</label><input class="form-control" placeholder="Country name"></div></div>
       <div class="form-group"><label class="form-label">Mode of Training</label><select class="form-control"><option>Physical</option><option>Online</option><option>Hybrid</option></select></div>
       <div class="form-group"><label class="form-label">Training Start Date</label><input class="form-control" type="date"></div>
       <div class="form-group"><label class="form-label">Training End Date</label><input class="form-control" type="date"></div>
-      <div class="form-group"><label class="form-label">No. of Actual Training Days</label><input class="form-control" type="number" placeholder="0" min="0"></div>
-      <div class="form-group"><label class="form-label">Credit Hours of Training <span style="font-size:10px;color:var(--text-muted)">(Assigned by CERC)</span></label><input class="form-control" placeholder="Read-only" readonly style="background:var(--bg)"></div>
-      <div class="form-group span-2"><label class="form-label">Name of Training Institute / Organization</label><input class="form-control" placeholder="Training institute name (max 50 chars)" maxlength="50"></div>
+      <div class="form-group"><label class="form-label">No. of Actual Training Days</label><input class="form-control" type="number" id="hr_tdDays_${idx}" placeholder="0" min="0"></div>
+      <div class="form-group"><label class="form-label">Credit Hours of Training</label><input class="form-control" type="number" id="hr_tdCredits_${idx}" placeholder="0" min="0"></div>
+      <div class="form-group span-2"><label class="form-label">Total Credit Hours (Last 5 Years) <span style="font-size:10px;color:var(--text-muted)">Auto-calculated</span></label><input class="form-control" id="hr_tdTotalCredits_${idx}" placeholder="Calculated" readonly style="background:var(--bg);cursor:not-allowed"></div>
     </div></div>`;
 }
 function hrDiscRowHTML(idx){
@@ -5955,6 +5984,8 @@ function hrDiscRowHTML(idx){
 function hrTab7(){
   return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">🎯 Professional Training History<button type="button" onclick="hrAddTrainRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
   <div id="hrTrainContainer">${hrTrainRowHTML(0)}</div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center">📊 Training Data<button type="button" onclick="hrAddTrainDataRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrTrainDataContainer">${hrTrainDataRowHTML(0)}</div></div>
   <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center">⚖ Disciplinary Proceedings<button type="button" onclick="hrAddDiscRow()" style="margin-left:auto;padding:5px 14px;background:var(--danger);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
   <div id="hrDiscContainer">${hrDiscRowHTML(0)}</div></div>`;
 }
@@ -5965,16 +5996,26 @@ function hrAddProfRow(){const c=document.getElementById('hrProfContainer');if(!c
 function hrAddPromoRow(){const c=document.getElementById('hrPromoContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrPromoRowHTML(_hrPromoCount++);c.appendChild(d.firstElementChild);}
 function hrAddPostingRow(){const c=document.getElementById('hrPostingContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrPostingRowHTML(_hrPostingCount++);c.appendChild(d.firstElementChild);}
 function hrAddTrainRow(){const c=document.getElementById('hrTrainContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrTrainRowHTML(_hrTrainCount++);c.appendChild(d.firstElementChild);}
+function hrAddTrainDataRow(){const c=document.getElementById('hrTrainDataContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrTrainDataRowHTML(_hrTrainDataCount++);c.appendChild(d.firstElementChild);}
 function hrAddDiscRow(){const c=document.getElementById('hrDiscContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrDiscRowHTML(_hrDiscCount++);c.appendChild(d.firstElementChild);}
 function hrRemoveRow(id){const el=document.getElementById(id);if(el)el.remove();}
 
 // ─── Conditional helpers ───
 function hrToggleAcadFields(idx,deg){
   const isMatricInter=deg==='Matric'||deg==='Intermediate';
+  const isDiplomaPlus=['Diploma','BA/BSc','BS/MS/MSc (16 Years)','MS/M.Phil (18 Years)','PhD','Post Doc'].includes(deg);
   const grp=document.getElementById('hr_aGrp_'+idx);
-  const sub=document.getElementById('hr_aSub_'+idx);
+  const dipSub=document.getElementById('hr_aDipSub_'+idx);
   if(grp)grp.style.display=isMatricInter?'':'none';
-  if(sub)sub.style.display=isMatricInter?'none':'';
+  if(dipSub)dipSub.style.display=isDiplomaPlus?'':'none';
+  // Major Subject (hr_aSub_) always remains visible
+}
+function hrCopyPermToTemp(){
+  if(!document.getElementById('hr_sameAsPerm')?.checked)return;
+  ['Sector','SubSector','Village','Society'].forEach(f=>{
+    const p=document.getElementById('hr_perm'+f),t=document.getElementById('hr_temp'+f);
+    if(p&&t)t.value=p.value;
+  });
 }
 function hrCtryChange(boardDivId,boardTxtId,val){
   const isPak=val==='Pakistan';
@@ -6020,7 +6061,7 @@ function switchHRTab(i){hrTabIdx=i;renderHRTabs();}
 function navigateHRTab(dir){hrTabIdx=Math.max(0,Math.min(hrTabs.length-1,hrTabIdx+dir));renderHRTabs();}
 function openHRAdd(){
   hrTabIdx=0;currentHREditId=null;
-  _hrAcadCount=1;_hrProfCount=1;_hrPromoCount=1;_hrPostingCount=1;_hrTrainCount=1;_hrDiscCount=1;
+  _hrAcadCount=1;_hrProfCount=1;_hrPromoCount=1;_hrPostingCount=1;_hrTrainCount=1;_hrTrainDataCount=1;_hrDiscCount=1;
   const panelsEl=document.getElementById('hrAddPanels');
   if(panelsEl)panelsEl.dataset.hrRendered='';
   renderHRTabs();openModal('hrAddModal');
