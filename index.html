@@ -6089,6 +6089,7 @@ function saveNewHR(){
     status:'Active',_addedDate:new Date().toDateString()
   };
   hrData.push(rec);
+  _hrFiltered=[...hrData];
   try{sessionStorage.setItem('hrData',JSON.stringify(hrData));}catch(e){}
   closeModal('hrAddModal');renderHRTable();
   const cnt=document.getElementById('hrCount');if(cnt)cnt.textContent=hrData.length;
@@ -6118,13 +6119,12 @@ function resetHRFilters(){
 function renderHRTable(){
   const tbody=document.getElementById('hrTbody');
   if(!tbody)return;
-  const data=_hrFiltered.length||document.getElementById('hrSearch')?.value?_hrFiltered:hrData;
-  document.getElementById('hrTableCount').textContent=hrData.length+' Records';
-  if(!hrData.length){
+  document.getElementById('hrTableCount').textContent=_hrFiltered.length+' Records';
+  if(!_hrFiltered.length){
     tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:48px;color:var(--text-muted)"><div style="font-size:32px;margin-bottom:10px">👤</div><div style="font-weight:600;margin-bottom:6px">No HR Records Yet</div><div style="font-size:12px">Click "Add New HR Record" to register an employee profile</div></td></tr>`;
     return;
   }
-  tbody.innerHTML=hrData.map((r,i)=>`<tr>
+  tbody.innerHTML=_hrFiltered.map((r,i)=>`<tr>
     <td>${i+1}</td>
     <td><strong>${r.fullName}</strong><div style="font-size:11px;color:var(--text-muted)">${r.mobile||'—'}</div></td>
     <td>${r.fatherName||'—'}</td>
