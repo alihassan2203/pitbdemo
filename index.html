@@ -2897,7 +2897,7 @@ let schoolSort={col:null,asc:true},schoolPage=1;
 const schoolPerPage=6;
 let filteredSchools=[...schoolData];
 let currentSchoolEditId=null,schoolTabIdx=0;
-const schoolTabs=['Basic Info','Contact & SMC','Building & Infrastructure','Labs/Library','Basic Facilities','ECE Program','Transport','Daycare & Hostel','Sports','Inventory','Incidents','Missing Facilities','Results','Additional Requirements','3rd Party HR'];
+const schoolTabs=['Basic Info','Contact & SMC','Building & Infrastructure','Labs/Library','Basic Facilities','ECE Program','Transport','Sports','Inventory','Incidents','Missing Facilities','Results','Additional Requirements','3rd Party HR'];
 const studentTabs=['Personal Details','Parents / Guardian','Educational & Special','Health & Medical','Financial & Stipend','Co-Curricular','Documents','Additional Info'];
 
 // ===== FORM UTILITIES & HELPERS =====
@@ -3137,7 +3137,7 @@ function renderSchoolAddTabs(){
 function switchSchoolTab(i){schoolTabIdx=i;renderSchoolAddTabs();}
 function navigateSchoolTab(dir){schoolTabIdx=Math.max(0,Math.min(schoolTabs.length-1,schoolTabIdx+dir));renderSchoolAddTabs();}
 function getSchoolTabContent(i){
-  const handlers = [sSTab0,sSTab1,sSTab2,sSTab3,sSTabLabs,sSTab4,sSTab5,sSTab6,sSTab7,sSTab8,sSTab9,sSTab10,sSTab11,sSTab12];
+  const handlers = [sSTab0,sSTab1,sSTab2,sSTab3,sSTabLabs,sSTab4,sSTab5,sSTab6,sSTab8,sSTab9,sSTab10,sSTab11,sSTab12];
   return handlers[i] ? handlers[i]() : `<div style="padding:20px;color:var(--text-secondary)">Tab ${i+1} content</div>`;
 }
 function sSTab0(){
@@ -3379,39 +3379,7 @@ function sSTabLabs(){
       <div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0">${['Math Lab','STEM Lab / Maker Space','Art & Craft Room','Mind Games','Podcast Room','IT Parks','Telescope','Google Excellence Lab','Blended Lab','Smart Class'].map(l=>`<label style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:12.5px;background:var(--bg)"><input type="checkbox" name="sa_interventionType" value="${l}" style="accent-color:var(--primary)"> ${l}</label>`).join('')}</div>
     </div>
   </div>
-  <div class="form-section" style="margin-top:18px"><div class="form-section-title">📚 School Library Information</div>
-    <div class="form-group" style="margin-bottom:12px"><label class="form-label">Purpose Built Library</label>
-      <div style="display:flex;gap:20px;margin-top:6px">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libBuilt" value="yes" onchange="schToggle('libMakeshiftBlock',false);schToggle('libDetailsBlock',true)"> Yes</label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libBuilt" value="no" onchange="schToggle('libMakeshiftBlock',true);schToggle('libDetailsBlock',false)" checked> No</label>
-      </div>
-    </div>
-    <div class="conditional-block visible" id="libMakeshiftBlock">
-      <div class="form-group"><label class="form-label">Make Shift Library?</label>
-        <div style="display:flex;gap:20px;margin-top:6px">
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libMakeshift" value="yes"> Yes</label>
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libMakeshift" value="no" checked> No</label>
-        </div>
-      </div>
-    </div>
-    <div class="conditional-block" id="libDetailsBlock">
-      <div class="form-grid">
-        <div class="form-group"><label class="form-label">Library Size (sq. ft.)</label><input class="form-control" type="number" id="sa_libSize" placeholder="0" min="0"></div>
-        <div class="form-group"><label class="form-label">Seating Capacity</label><input class="form-control" type="number" id="sa_libSeats" placeholder="0" min="0"></div>
-        <div class="form-group"><label class="form-label">Total Collections / Books</label><input class="form-control" type="number" id="sa_libBooks" placeholder="0" min="0"></div>
-        <div class="form-group"><label class="form-label">Urdu Books</label><input class="form-control" type="number" id="sa_libUrdu" placeholder="0" min="0"></div>
-        <div class="form-group"><label class="form-label">English Books</label><input class="form-control" type="number" id="sa_libEnglish" placeholder="0" min="0"></div>
-        <div class="form-group"><label class="form-label">Reference Books</label><input class="form-control" type="number" id="sa_libRef" placeholder="0" min="0"></div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">${['Digital Library Resources','Digital Catalogue','Printer (For Library)','Newspaper','Journal'].map(item=>`<label style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:12.5px;background:var(--bg)"><input type="checkbox" name="sa_libFeatures" value="${item}" style="accent-color:var(--primary)"> ${item}</label>`).join('')}</div>
-      <div class="form-group" style="margin-top:12px"><label class="form-label">Internet Facility (for Library)</label>
-        <div style="display:flex;gap:20px;margin-top:6px">
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libInternet" value="yes"> Yes</label>
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_libInternet" value="no" checked> No</label>
-        </div>
-      </div>
-    </div>
-  </div>`;
+`;
 }
 function sSTab3(){
   const rb=(name,yId,nId,yLabel,nLabel,onY,onN)=>`<div style="display:flex;gap:14px;margin-top:6px"><label style="display:flex;align-items:center;gap:5px;font-size:12.5px;cursor:pointer"><input type="radio" name="${name}" id="${yId}" value="yes" onchange="${onY}"> ${yLabel||'Yes'}</label><label style="display:flex;align-items:center;gap:5px;font-size:12.5px;cursor:pointer"><input type="radio" name="${name}" id="${nId}" value="no" onchange="${onN}" checked> ${nLabel||'No'}</label></div>`;
@@ -3597,6 +3565,64 @@ function addECETeacherRow() {
       </div>
     </div>
     <button type="button" style="margin-top:10px;padding:4px 14px;background:#e74c3c;color:#fff;border:none;border-radius:4px;font-size:12px;cursor:pointer" onclick="document.getElementById('eceTeacherRow_${id}')?.remove()">Remove</button>`;
+  container.appendChild(row);
+}
+
+let eceAssistRowCount = 0;
+function addECETeachAssistRow() {
+  const container = document.getElementById('eceAssistRowsContainer');
+  if (!container) return;
+  const id = ++eceAssistRowCount;
+  const row = document.createElement('div');
+  row.id = 'eceAssistRow_' + id;
+  row.style.cssText = 'background:var(--bg,#f8f9fa);border:1px solid var(--border,#dee2e6);border-radius:8px;padding:14px;margin-bottom:10px';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end">
+      <div>
+        <label style="font-size:12px;font-weight:600;margin-bottom:4px;display:block">Assistant Type <span style="color:red">*</span></label>
+        <select class="form-control" id="eceAssistType_${id}">
+          <option value="">Select</option>
+          <option>ECE Project</option>
+          <option>Partner Provided</option>
+          <option>Regular Govt Teacher</option>
+          <option>Contract Teacher</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;margin-bottom:4px;display:block">Number of Teacher Assistants <span style="color:red">*</span></label>
+        <input type="number" class="form-control" id="eceAssistCount_${id}" placeholder="0" min="0">
+      </div>
+    </div>
+    <button type="button" style="margin-top:10px;padding:4px 14px;background:#e74c3c;color:#fff;border:none;border-radius:4px;font-size:12px;cursor:pointer" onclick="document.getElementById('eceAssistRow_${id}')?.remove()">Remove</button>`;
+  container.appendChild(row);
+}
+
+let eceAyaRowCount = 0;
+function addECEAyaRow() {
+  const container = document.getElementById('eceAyaRowsContainer');
+  if (!container) return;
+  const id = ++eceAyaRowCount;
+  const row = document.createElement('div');
+  row.id = 'eceAyaRow_' + id;
+  row.style.cssText = 'background:var(--bg,#f8f9fa);border:1px solid var(--border,#dee2e6);border-radius:8px;padding:14px;margin-bottom:10px';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end">
+      <div>
+        <label style="font-size:12px;font-weight:600;margin-bottom:4px;display:block">ECE Aya Type <span style="color:red">*</span></label>
+        <select class="form-control" id="eceAyaType_${id}">
+          <option value="">Select</option>
+          <option>ECE Project</option>
+          <option>Partner Provided</option>
+          <option>Govt Provided</option>
+          <option>Volunteer</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;margin-bottom:4px;display:block">Number of ECE Ayas <span style="color:red">*</span></label>
+        <input type="number" class="form-control" id="eceAyaCount_${id}" placeholder="0" min="0">
+      </div>
+    </div>
+    <button type="button" style="margin-top:10px;padding:4px 14px;background:#e74c3c;color:#fff;border:none;border-radius:4px;font-size:12px;cursor:pointer" onclick="document.getElementById('eceAyaRow_${id}')?.remove()">Remove</button>`;
   container.appendChild(row);
 }
 
@@ -4263,6 +4289,36 @@ function sSTab5(){ return `
     <button type="button" onclick="addECETeacherRow()" style="margin-top:10px;padding:8px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">+ Add More</button>
   </div>
 </div>
+
+<div class="form-section" style="margin-top:18px"><div class="form-section-title">🙋 Teacher Assistant</div>
+  <p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Availability and type of teacher assistants</p>
+  <div class="form-group" style="margin-bottom:12px">
+    <label class="form-label">Teacher Assistant Available? <span class="req">*</span></label>
+    <div style="display:flex;gap:20px;margin-top:6px">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_eceAssistAvail" value="yes" onchange="schToggle('eceAssistBlock',true)"> Yes</label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_eceAssistAvail" value="no" onchange="schToggle('eceAssistBlock',false)" checked> No</label>
+    </div>
+  </div>
+  <div class="conditional-block" id="eceAssistBlock">
+    <div id="eceAssistRowsContainer"></div>
+    <button type="button" onclick="addECETeachAssistRow()" style="margin-top:10px;padding:8px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">+ Add More</button>
+  </div>
+</div>
+
+<div class="form-section" style="margin-top:18px"><div class="form-section-title">👶 ECE Aya</div>
+  <p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Availability and type of ECE Aya</p>
+  <div class="form-group" style="margin-bottom:12px">
+    <label class="form-label">ECE Aya Available? <span class="req">*</span></label>
+    <div style="display:flex;gap:20px;margin-top:6px">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_eceAyaAvail" value="yes" onchange="schToggle('eceAyaBlock',true)"> Yes</label>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="sa_eceAyaAvail" value="no" onchange="schToggle('eceAyaBlock',false)" checked> No</label>
+    </div>
+  </div>
+  <div class="conditional-block" id="eceAyaBlock">
+    <div id="eceAyaRowsContainer"></div>
+    <button type="button" onclick="addECEAyaRow()" style="margin-top:10px;padding:8px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">+ Add More</button>
+  </div>
+</div>
 `;}
 
 
@@ -4279,16 +4335,6 @@ function sSTab6(){ return `<div class="form-section"><div class="form-section-ti
       <div class="form-group"><label>Bus Fund Charged Per Student Per Month (Amount)</label><input class="form-control" type="number" id="sa_busFund" placeholder="0" min="0" style="border-color:var(--accent)"></div>
     </div>
   </div>
-</div></div>`;
-}
-
-function sSTab7(){ return `<div class="form-section"><div class="form-section-title">🏠 Daycare & Hostel</div><div class="form-grid">
-  <div class="form-group"><label>Daycare Available</label><select class="form-control" id="sa_daycare"><option>No</option><option>Yes</option></select></div>
-  <div class="form-group"><label>Daycare Kitchen</label><select class="form-control" id="sa_daycareKit"><option>No</option><option>Yes</option></select></div>
-  <div class="form-group"><label>Daycare Staff</label><select class="form-control" id="sa_daycareStaff"><option>No</option><option>Yes</option></select></div>
-  <div class="form-group"><label>Hostel Available</label><select class="form-control" id="sa_hostel"><option>No</option><option>Yes</option></select></div>
-  <div class="form-group"><label>Hostel Rooms</label><input class="form-control" type="number" id="sa_hostelRooms" min="0"></div>
-  <div class="form-group"><label>Hostel Kitchen</label><select class="form-control" id="sa_hostelKit"><option>No</option><option>Yes</option></select></div>
 </div></div>`;
 }
 
@@ -5223,10 +5269,6 @@ getSchoolTabContent = function(idx) {
 
   if(tabName === 'ECE Program') {
     return sSTab5();
-  }
-
-  if(tabName === 'Daycare & Hostel') {
-    return sSTab7();
   }
 
   if(tabName === 'Sports') {
