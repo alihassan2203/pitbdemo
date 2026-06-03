@@ -1161,6 +1161,11 @@ select.form-control { cursor: pointer; }
         Schools
         <span class="nav-badge" id="schoolCount">—</span>
       </div>
+      <div class="nav-item" onclick="showPage('hr')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        HR Records
+        <span class="nav-badge" id="hrCount">—</span>
+      </div>
     </nav>
     <div class="sidebar-bottom">
       <div class="user-card">
@@ -1326,6 +1331,47 @@ select.form-control { cursor: pointer; }
     </div>
 
 
+    <!-- ==================== HR PAGE ==================== -->
+    <div class="page" id="page-hr">
+      <div class="page-header">
+        <div class="page-header-left">
+          <div class="breadcrumb"><span onclick="showPage('dashboard')" style="cursor:pointer;color:var(--primary)">Home</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><polyline points="9 18 15 12 9 6"/></svg>HR Records</div>
+          <h1 class="page-title">HR Management</h1>
+          <p class="page-subtitle">Complete HRMIS — staff personal, service, qualification, training and disciplinary records.</p>
+        </div>
+        <button class="btn-primary" onclick="openHRAdd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add New HR Record</button>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Name, CNIC, designation..." id="hrSearch" oninput="filterHRRecords()"></div>
+        <div class="filter-group"><span class="filter-label">BPS</span><select class="filter-select" id="filterHRBPS" onchange="filterHRRecords()"><option value="">All BPS</option></select></div>
+        <div class="filter-group"><span class="filter-label">Designation</span><select class="filter-select" id="filterHRDesig" onchange="filterHRRecords()"><option value="">All</option></select></div>
+        <div class="filter-group"><span class="filter-label">Status</span><select class="filter-select" id="filterHRStatus" onchange="filterHRRecords()"><option value="">All</option><option>Active</option><option>Inactive</option></select></div>
+        <button class="btn-filter" onclick="resetHRFilters()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reset</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-info"><div class="t-count" id="hrTableCount">0 Records</div><div class="t-desc">PITB HR Module — Complete Employee Records</div></div>
+          <div class="table-tools"><button class="tool-btn" onclick="exportHRCSV()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export CSV</button></div>
+        </div>
+        <div class="table-wrap" style="overflow-x:auto">
+          <table id="hrTable" style="min-width:980px">
+            <thead><tr>
+              <th style="width:46px">#</th>
+              <th>Employee Name</th>
+              <th>Father's Name</th>
+              <th>BPS</th>
+              <th>Designation</th>
+              <th>Place of Posting</th>
+              <th>CNIC</th>
+              <th style="text-align:center">Actions</th>
+            </tr></thead>
+            <tbody id="hrTbody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="hrPagination"></div>
+      </div>
+    </div>
+
     <!-- ==================== STUDENT PAGE ==================== -->
     <div class="page" id="page-students">
       <div class="page-header">
@@ -1375,6 +1421,56 @@ select.form-control { cursor: pointer; }
 
 
 </div><!-- /admin-portal -->
+
+<!-- ===== HR ADD MODAL ===== -->
+<div class="modal-overlay" id="hrAddModal">
+  <div class="modal modal-lg" onclick="event.stopPropagation()" style="max-width:1020px">
+    <div class="modal-head">
+      <div><div class="modal-title">Add New HR Record</div><div class="modal-subtitle">PITB HRMIS — Complete employee profile across all sections</div></div>
+      <button class="modal-close" onclick="closeModal('hrAddModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body"><div class="form-tabs" id="hrAddTabs"></div><div id="hrAddPanels"></div></div>
+    <div class="form-nav">
+      <div class="form-steps-indicator" id="hrStepsIndicator"></div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="hrBtnDraft" onclick="saveHRDraft()" style="padding:8px 16px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-secondary);border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;line-height:1">💾 Save Draft</button>
+        <button class="btn-secondary" id="hrBtnPrev" onclick="navigateHRTab(-1)" style="display:none">← Previous</button>
+        <button class="btn-primary" id="hrBtnNext" onclick="navigateHRTab(1)">Next →</button>
+        <button class="btn-primary" id="hrBtnSave" onclick="saveNewHR()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Save HR Record</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HR VIEW MODAL ===== -->
+<div class="modal-overlay" id="hrViewModal">
+  <div class="modal modal-lg" onclick="event.stopPropagation()" style="max-width:860px">
+    <div class="modal-head">
+      <div><div class="modal-title" id="hrViewTitle">Employee Profile</div><div class="modal-subtitle" id="hrViewSubtitle">Full HR Record</div></div>
+      <button class="modal-close" onclick="closeModal('hrViewModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="hrViewBody" style="padding:24px"></div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeModal('hrViewModal')">Close</button>
+      <button class="btn-primary" onclick="deleteHRRecord(_hrViewingId);closeModal('hrViewModal')" style="background:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>Delete Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HR EDIT MODAL ===== -->
+<div class="modal-overlay" id="hrEditModal">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:720px">
+    <div class="modal-head">
+      <div><div class="modal-title">Edit HR Record</div><div class="modal-subtitle">Full Name and CNIC are locked (one-time fields)</div></div>
+      <button class="modal-close" onclick="closeModal('hrEditModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" style="padding:22px 24px" id="hrEditBody"></div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeModal('hrEditModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveHREdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Save Changes</button>
+    </div>
+  </div>
+</div>
 
     <!-- ===== SCHOOL VIEW MODAL ===== -->
     <div class="modal-overlay" id="schoolViewModal">
@@ -3457,7 +3553,7 @@ updateDashboard=function(){
   set('dashStudentsActive','↑ '+aStudent+' active');
   set('dashInactiveSchools','↓ '+(tSchool-aSchool)+' inactive');
   set('dashFeesUnpaid','↑ Active students');
-  set('schoolCount',tSchool); set('studentCount',tStudent);
+  set('schoolCount',tSchool); set('studentCount',tStudent); set('hrCount',typeof hrData!=='undefined'?hrData.length:'—');
   set('quickSchool',tSchool+' schools • '+aSchool+' active');
   set('quickStudent',tStudent+' students • '+aStudent+' active');
   if (typeof renderTodayEntriesChart === 'function') renderTodayEntriesChart();
@@ -3477,11 +3573,12 @@ showPage=function(id){
     const oc=n.getAttribute('onclick');
     if(oc&&oc.includes("'"+id+"'"))n.classList.add('active');
   });
-  const pageNames={dashboard:'Dashboard',schools:'Schools Module',students:'Students Module'};
+  const pageNames={dashboard:'Dashboard',schools:'Schools Module',students:'Students Module',hr:'HR Module'};
   const pn=document.getElementById('topbarPageName'); if(pn)pn.textContent=pageNames[id]||'';
   if(id==='schools')filterSchools();
   else if(id==='students')filterStudents();
   else if(id==='dashboard')updateDashboard();
+  else if(id==='hr'){renderHRTable();const cnt=document.getElementById('hrCount');if(cnt)cnt.textContent=hrData.length;}
 };
 
 // Enhanced global search
@@ -4945,13 +5042,640 @@ if (_origSaveNewStudent) {
   };
 }
 
+// ================================================================
+// HR MODULE (PITB HRMIS)
+// ================================================================
+let hrData = [
+  {id:1,fullName:'Muhammad Asif Khan',fatherName:'Muhammad Akram Khan',dob:'1978-03-15',gender:'Male',marital:'Married',religion:'Islam',bloodGroup:'B+',cnic:'35202-1234567-1',mobile:'0300-1234567',province:'Punjab',district:'Lahore',addrPerm:'House #12, Street 4, Model Town, Lahore',addrTemp:'House #12, Street 4, Model Town, Lahore',emgName:'Mrs. Sadia Asif',emgNo:'0321-1234567',agpr:'AGP-2002-0012',acprs:'ACPRS-2002-0012',ntn:'1234567-8',bpsRegular:'BPS-18',bpsTime:'BPS-18',curDesig:'Deputy Director (Planning)',curPosting:'FDE Headquarters, Islamabad',curJoinDate:'2002-08-01',seniority:'Senior',fdeMode:'Regular',adminExp:[{from:'2010-01',to:'2015-12',post:'Assistant Director',dept:'FDE'}],status:'Active',spouseName:'Sadia Asif',spouseCNIC:'35202-9876543-2',_addedDate:'2025-01-10'},
+  {id:2,fullName:'Zainab Fatima',fatherName:'Ghulam Mustafa',dob:'1985-07-22',gender:'Female',marital:'Married',religion:'Islam',bloodGroup:'O+',cnic:'61101-2345678-2',mobile:'0333-2345678',province:'Islamabad',district:'Islamabad',addrPerm:'Flat 5B, G-9/2, Islamabad',addrTemp:'Flat 5B, G-9/2, Islamabad',emgName:'Mr. Tariq Mustafa',emgNo:'0312-2345678',agpr:'AGP-2008-0047',acprs:'ACPRS-2008-0047',ntn:'2345678-9',bpsRegular:'BPS-17',bpsTime:'BPS-17',curDesig:'Assistant Director (HR)',curPosting:'FDE Directorate, F-7/2, Islamabad',curJoinDate:'2008-04-15',seniority:'Mid',fdeMode:'Regular',adminExp:[],status:'Active',spouseName:'Dr. Imran Tariq',spouseCNIC:'61101-1122334-3',_addedDate:'2025-01-11'},
+  {id:3,fullName:'Rao Khalid Mehmood',fatherName:'Rao Mehmood Ahmad',dob:'1975-11-05',gender:'Male',marital:'Married',religion:'Islam',bloodGroup:'A+',cnic:'38403-3456789-3',mobile:'0345-3456789',province:'Punjab',district:'Faisalabad',addrPerm:'136-B, Peoples Colony No.1, Faisalabad',addrTemp:'House #5, I-8/3, Islamabad',emgName:'Mrs. Rubina Khalid',emgNo:'0300-3456789',agpr:'AGP-1999-0008',acprs:'ACPRS-1999-0008',ntn:'3456789-0',bpsRegular:'BPS-19',bpsTime:'BPS-19',curDesig:'Director (Curriculum)',curPosting:'FDE Headquarters, Islamabad',curJoinDate:'1999-03-01',seniority:'Senior',fdeMode:'Regular',adminExp:[{from:'2005-01',to:'2012-06',post:'Deputy Director',dept:'Curriculum Wing'},{from:'2012-07',to:'2018-12',post:'Director',dept:'FDE'}],status:'Active',spouseName:'Rubina Khalid',spouseCNIC:'38403-8877665-4',_addedDate:'2025-01-12'},
+  {id:4,fullName:'Amna Bibi',fatherName:'Haji Abdul Rehman',dob:'1990-02-28',gender:'Female',marital:'Single',religion:'Islam',bloodGroup:'AB-',cnic:'61101-4567890-4',mobile:'0311-4567890',province:'Islamabad',district:'Islamabad',addrPerm:'Q-14, Sector G-11/1, Islamabad',addrTemp:'Q-14, Sector G-11/1, Islamabad',emgName:'Haji Abdul Rehman',emgNo:'0300-4567890',agpr:'AGP-2015-0093',acprs:'ACPRS-2015-0093',ntn:'4567890-1',bpsRegular:'BPS-16',bpsTime:'BPS-16',curDesig:'Section Officer (Accounts)',curPosting:'FDE Finance Branch, Islamabad',curJoinDate:'2015-09-01',seniority:'Junior',fdeMode:'Regular',adminExp:[],status:'Active',spouseName:'',spouseCNIC:'',_addedDate:'2025-01-13'},
+  {id:5,fullName:'Tariq Hussain Qureshi',fatherName:'Muhammad Hussain Qureshi',dob:'1970-06-10',gender:'Male',marital:'Married',religion:'Islam',bloodGroup:'O-',cnic:'35202-5678901-5',mobile:'0301-5678901',province:'Punjab',district:'Lahore',addrPerm:'42-C, Gulberg III, Lahore',addrTemp:'House #8, F-6/3, Islamabad',emgName:'Mrs. Naila Tariq',emgNo:'0321-5678901',agpr:'AGP-1995-0003',acprs:'ACPRS-1995-0003',ntn:'5678901-2',bpsRegular:'BPS-20',bpsTime:'BPS-20',curDesig:'Joint Director (Administration)',curPosting:'FDE Headquarters, Islamabad',curJoinDate:'1995-06-01',seniority:'Senior',fdeMode:'Regular',adminExp:[{from:'2000-01',to:'2008-12',post:'Deputy Director (Admin)',dept:'FDE'},{from:'2009-01',to:'2018-06',post:'Director (Admin)',dept:'FDE'}],status:'Active',spouseName:'Naila Tariq',spouseCNIC:'35202-7766554-6',_addedDate:'2025-01-14'},
+  {id:6,fullName:'Shaista Parveen',fatherName:'Muhammad Shafiq',dob:'1982-09-18',gender:'Female',marital:'Married',religion:'Islam',bloodGroup:'B-',cnic:'61101-6789012-6',mobile:'0322-6789012',province:'Islamabad',district:'Islamabad',addrPerm:'St-7, H-13/1, Islamabad',addrTemp:'St-7, H-13/1, Islamabad',emgName:'Mr. Bilal Ahmed',emgNo:'0333-6789012',agpr:'AGP-2005-0031',acprs:'ACPRS-2005-0031',ntn:'6789012-3',bpsRegular:'BPS-17',bpsTime:'BPS-17',curDesig:'Education Officer (ICT)',curPosting:'FDE Zone-1, Islamabad',curJoinDate:'2005-11-15',seniority:'Mid',fdeMode:'Regular',adminExp:[],status:'On Leave',spouseName:'Bilal Ahmed',spouseCNIC:'61101-3344556-7',_addedDate:'2025-01-15'},
+  {id:7,fullName:'Faisal Mahmood Abbasi',fatherName:'Mahmood Abbasi',dob:'1988-12-03',gender:'Male',marital:'Married',religion:'Islam',bloodGroup:'A-',cnic:'61101-7890123-7',mobile:'0344-7890123',province:'Islamabad',district:'Islamabad',addrPerm:'House #22, E-7/1, Islamabad',addrTemp:'House #22, E-7/1, Islamabad',emgName:'Mrs. Hina Faisal',emgNo:'0300-7890123',agpr:'AGP-2012-0067',acprs:'ACPRS-2012-0067',ntn:'7890123-4',bpsRegular:'BPS-17',bpsTime:'BPS-17',curDesig:'Assistant Director (IT)',curPosting:'FDE ICT Wing, Islamabad',curJoinDate:'2012-01-10',seniority:'Mid',fdeMode:'Regular',adminExp:[],status:'Active',spouseName:'Hina Faisal',spouseCNIC:'61101-5566778-8',_addedDate:'2025-01-16'}
+];
+try { const s=sessionStorage.getItem('hrData'); if(s){const p=JSON.parse(s);if(Array.isArray(p)&&p.length>0)hrData=p;} } catch(e){}
+let hrTabIdx=0, currentHREditId=null;
+let _hrAcadCount=1,_hrProfCount=1,_hrPromoCount=1,_hrPostingCount=1,_hrTrainCount=1,_hrTrainDataCount=1,_hrDiscCount=1;
+
+const hrTabs=['Personal Info','Govt Service','FDE Employment','Current Posting','Family Info','Qualifications','Career History','Training',"Disciplinary","ACR's",'Results'];
+const _hrBPS=Array.from({length:22},(_,i)=>`BPS-${i+1}`);
+const _hrDesig=['Principal','Vice Principal','Head Mistress','Deputy Head Mistress','Asst. Head Mistress','Assistant Headmistress','Subject Specialist (SS)','Senior Subject Teacher (SST)','Lecturer','Primary School Teacher (PST)','Physical Education Teacher (PET)','Drawing Master','Art Teacher','Computer Teacher','Lab Assistant','Senior Clerk','Junior Clerk','DDO','Cashier','Naib Qasid','Driver','Chowkidar','Sweeper','Assistant Incharge','Conductor','Daftari','StenoTypist','StenoGrapher','Superintendant','Supervisor','Tech Assistant','Lab Incharge','Supervisor Monitoring','Library Attendant','Ground Supervisor','Mechanic','Aya','Daily Wager (Non-Teacher)','Telephone Operator','Carpenter','Electrician','Nurse','Plumber','Urdu Typist','Administrator','Receptionist','Ground Man','Gas Mistry','Data Entry Operator','Camera Man','Burser','Care Taker','Day Care Taker','Dispenser','Library Clerk','Sacked Employees','Account Officer','Estate Officer','Assistant Account Officer','B One Employee','Table Boy','Coordinator','Civil Engineer','Inspector Evaluation','Offset Machine Operator','Security Supervisor','Research Center Attendant','Gastatner Operator','DG','Assistant Research Officer','Baildar','Deputy DG','Assistant Warden','Assistant Private Secretary','Digital Machine Operator','Lower Division Clerk','Regional Director (Examinations)','Senior Office Management Officer','Upper Division Clerk','Regional Director of Education','Secondary School Teacher / Deputy Director','Trained Graduate Teacher / Assistant Director','Assistant / Elementary School Teacher','Area Education Officer','Assistant to the Assistant Education Officer','Project Management Officer','Officer In-Charge','ECE Aya','Computer Lab. Incharge','P.T.I','Education Officer'];
+const _hrProvinces=['Punjab','Sindh','KPK','Balochistan','ICT','Gilgit-Baltistan','AJK'];
+const _hrBoards=['FBISE','BISE Lahore','BISE Rawalpindi','BISE Faisalabad','BISE Multan','BISE Gujranwala','BISE Sargodha','BISE Peshawar','BISE Mardan','BISE Abbottabad','BISE Quetta','BISE Karachi','BISE Hyderabad','BISE Sukkur','Quaid-i-Azam University','Pakistan Institute of Engineering and Applied Sciences','National Defence University, Pakistan','Allama Iqbal Open University','International Islamic University, Islamabad','National University of Sciences and Technology, Pakistan','COMSATS University','Bahria University','Federal Urdu University of Arts, Science and Technology','Institute of Space Technology','National University of Modern Languages','Air University, Islamabad','Virtual University of Pakistan','Shaheed Zulfiqar Ali Bhutto Medical University','National University of Technology','Pakistan Institute of Development Economics','National Skills University','University of Balochistan','Bolan University of Medical & Health Sciences','Balochistan University of Information Technology, Engineering and Management Sciences','Sardar Bahadur Khan Women\'s University','University of Turbat','University of Gwadar','University of Makran','Balochistan University of Engineering and Technology','Lasbela University of Agriculture, Water and Marine Sciences','University of Loralai','Mir Chakar Khan Rind University','Islamia College University','University of Peshawar','University of Agriculture, Peshawar','University of Engineering and Technology, Peshawar','Institute of Management Sciences Peshawar','Shaheed Benazir Bhutto Women University','Khyber Medical University','University of Agriculture, Dera Ismail Khan','Gomal University','Abbottabad University of Science and Technology','Kohat University of Science and Technology','Women University Swabi','University of Swabi','University of Swat','University of Engineering & Applied Sciences, Swat','University of Veterinary & Animal Science','University of Haripur','Pak-Austria Fachhochschule: Institute of Applied Sciences and Technology','University of Engineering and Technology, Mardan','Women University Mardan','Abdul Wali Khan University Mardan','Hazara University','University of Science and Technology Bannu','Shaheed Benazir Bhutto University, Sheringal','University of Malakand','University of Buner','University of Technology, Nowshera','FATA University','University of Chitral','University of Lakki Marwat','Khushal Khan Khattak University','Bacha Khan University','University of Dir','University of Shangla','University of the Punjab','King Edward Medical University','University of Engineering and Technology, Lahore','National College of Arts','University of Veterinary and Animal Sciences','Punjab Tianjin University of Technology','Kinnaird College for Women University','Government College University, Lahore','Lahore College for Women University','Fatima Jinnah Medical University','University of Health Sciences, Lahore','University of Education','Pakistan Institute of Fashion and Design','Information Technology University of the Punjab','Lahore School of Economics','University of Home Economics Lahore','National University of Pakistan','Pir Mehr Ali Shah Arid Agriculture University','Fatima Jinnah Women University','Rawalpindi Medical University','National University of Medical Sciences','Rawalpindi Women University','Government Viqar-un-Nisa Women University','University of Agriculture, Faisalabad','Government College University, Faisalabad','National Textile University','Faisalabad Medical University','Government College Women University, Faisalabad','Government Sadiq College Women University','The Islamia University of Bahawalpur','Cholistan University of Veterinary and Animal Sciences','University of Engineering and Technology, Taxila','University of Sargodha','University of Gujrat','Government College Women University, Sialkot','NFC Institute of Engineering and Technology','Bahauddin Zakariya University','Women University Multan','Muhammad Nawaz Sharif University of Agriculture','Muhammad Nawaz Sharif University of Engineering and Technology','Nishtar Medical University','Emerson University, Multan','Khawaja Fareed University of Engineering and Information Technology','University of Rasul','University of Sahiwal','University of Okara','University of Jhang','Ghazi University','Mir Chakar Khan Rind University of Technology','University of Narowal','Baba Guru Nanak University','University of Chakwal','Sindh Madressatul Islam University','NED University of Engineering and Technology','Dow University of Health Sciences','University of Karachi','Institute of Business Administration, Karachi','Dawood University of Engineering and Technology','Benazir Bhutto Shaheed University','Jinnah Sindh Medical University','Shaheed Zulfiqar Ali Bhutto University of Law','Ziauddin University','City University of Health Sciences','Liaquat University of Medical and Health Sciences','University of Sindh','Mehran University of Engineering and Technology','Shaheed Benazir Bhutto University, Benazirabad','Quaid-e-Awam University of Engineering, Science and Technology','Peoples University of Medical and Health Sciences for Women','Shaheed Benazir Bhutto University of Veterinary and Animal Sciences','Government College University Hyderabad','Sukkur IBA University','Begum Nusrat Bhutto Women University','Shah Abdul Latif University','Benazir Bhutto Shaheed University of Technology and Skill Development','Shaheed Mohtarma Benazir Bhutto Medical University','University of Larkano','Sindh Agriculture University','University of Sufism and Modern Sciences','Mirpur University of Science and Technology','University of Azad Jammu and Kashmir','University of Poonch','Karakoram International University','Baltistan University','Other'];
+const _hrAdminExp=['Principal','Head of Institution','Headmistress','Deputy Headmistress','Assistant Headmistress','Vice Principal','Head of the Department','DDO','Examination Incharge','Admission Incharge','Discipline Committee Incharge/Member','Student Affairs','Time Table Incharge','FBISE/University Focal Person','Member/Chairman Procurement Committee','Sports Incharge','Transport Incharge','Master Trainer','FDE Headquarter','AEO Office'];
+const _hrTrainAreas=['Educational Management','Educational Planning','Education Finance','Education Quality','Inclusion & Equity','Access & Resource Management','HRM/Training & Development/Leadership/Administration','Procurement','Financial Management','Any Other (Please Specify)'];
+const _hrDistricts={'Punjab':['Lahore','Rawalpindi','Faisalabad','Multan','Gujranwala','Sialkot','Sargodha','Bahawalpur','Sheikhupura','Gujrat','Attock','Chakwal','Jhang','Other Punjab'],'Sindh':['Karachi','Hyderabad','Sukkur','Larkana','Mirpur Khas','Nawabshah','Jacobabad','Other Sindh'],'KPK':['Peshawar','Abbottabad','Mardan','Swat','Kohat','Bannu','Dera Ismail Khan','Other KPK'],'Balochistan':['Quetta','Turbat','Khuzdar','Hub','Gwadar','Other Balochistan'],'ICT':['Islamabad'],'Gilgit-Baltistan':['Gilgit','Skardu','Hunza','Other GB'],'AJK':['Muzaffarabad','Mirpur','Rawalakot','Other AJK']};
+
+function hrBPS(){return _hrBPS.map(b=>`<option>${b}</option>`).join('');}
+function hrDesigOpts(){return _hrDesig.map(d=>`<option>${d}</option>`).join('');}
+function hrInstOpts(){return ['AEO Office Urban 1','AEO Office Urban 2','AEO Office Sihala','AEO Office Nilore','AEO Office Barakahu','AEO Office Tarnol',...schoolData.map(s=>s.name)].map(i=>`<option>${i}</option>`).join('');}
+
+// ─── TAB 0: Personal Info ───
+function hrTab0(){
+  const adminCbs=_hrAdminExp.map(e=>`<label style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;font-size:12px;white-space:nowrap;margin-bottom:4px"><input type="checkbox" name="hr_adminExp" value="${e}" style="accent-color:var(--primary);margin:0"> ${e}</label>`).join('');
+  return `<div class="form-section"><div class="form-section-title">👤 Personal Information</div><div class="form-grid">
+    <div class="form-group span-2"><label class="form-label">Full Name <span class="req">*</span></label><input class="form-control" id="hr_fullName" placeholder="Full name as per CNIC"></div>
+    <div class="form-group"><label class="form-label">Father's Name <span class="req">*</span></label><input class="form-control" id="hr_fatherName" placeholder="Father's full name"></div>
+    <div class="form-group"><label class="form-label">Date of Birth <span class="req">*</span></label><input class="form-control" type="date" id="hr_dob" onchange="hrCalcSuperannuation()"></div>
+    <div class="form-group"><label class="form-label">Gender <span class="req">*</span></label><select class="form-control" id="hr_gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+    <div class="form-group"><label class="form-label">Marital Status <span class="req">*</span></label><select class="form-control" id="hr_marital"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div>
+    <div class="form-group"><label class="form-label">Religion</label><select class="form-control" id="hr_religion" onchange="schToggle('hrOtherRelBlock',this.value==='Other')"><option value="">Select</option><option>Islam</option><option>Christianity</option><option>Hinduism</option><option>Sikhism</option><option>Other</option></select></div>
+    <div class="conditional-block" id="hrOtherRelBlock" style="padding:0;border:none;background:none;grid-column:span 1">
+      <div class="form-group"><label class="form-label">Religion (Specify)</label><input class="form-control" id="hr_religionOther" placeholder="Please specify"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Blood Group</label><select class="form-control" id="hr_blood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+    <div class="form-group span-2" style="margin-bottom:4px"><label class="form-label" style="font-weight:700;color:var(--primary);font-size:13px;text-transform:uppercase;letter-spacing:.4px">Home Address (Permanent)</label></div>
+    <div class="form-group"><label class="form-label">Province</label><select class="form-control" id="hr_permProvince"><option value="">Select Province</option><option>Islamabad Capital Territory</option><option>Punjab</option><option>Sindh</option><option>Khyber Pakhtunkhwa</option><option>Balochistan</option><option>AJK</option><option>Gilgit-Baltistan</option></select></div>
+    <div class="form-group"><label class="form-label">District</label><input class="form-control" id="hr_permDistrict" placeholder="e.g. Islamabad"></div>
+    <div class="form-group"><label class="form-label">House No.</label><input class="form-control" id="hr_permHouseNo" placeholder="e.g. 12-A"></div>
+    <div class="form-group"><label class="form-label">Street No.</label><input class="form-control" id="hr_permStreetNo" placeholder="e.g. Street 5"></div>
+    <div class="form-group"><label class="form-label">Sector</label><input class="form-control" id="hr_permSector" placeholder="e.g. G-9"></div>
+    <div class="form-group"><label class="form-label">Sub-Sector</label><input class="form-control" id="hr_permSubSector" placeholder="e.g. G-9/1"></div>
+    <div class="form-group"><label class="form-label">Village</label><input class="form-control" id="hr_permVillage" placeholder="Village name (if applicable)"></div>
+    <div class="form-group"><label class="form-label">Society / Mohalla</label><input class="form-control" id="hr_permSociety" placeholder="Society or mohalla"></div>
+    <div class="form-group"><label class="form-label">Latitude</label><input class="form-control" id="hr_permLat" placeholder="e.g. 33.7215"></div>
+    <div class="form-group"><label class="form-label">Longitude</label><input class="form-control" id="hr_permLng" placeholder="e.g. 73.0433"></div>
+    <div class="form-group span-2"><label class="form-label">Residential Accommodation</label>
+      <select class="form-control" id="hr_residentialAccom" style="max-width:320px"><option value="">Select Type</option><option>Govt. Accommodation</option><option>Hiring</option><option>Self-Hiring</option><option>Private House/Rental</option></select>
+    </div>
+    <div class="form-group span-2" style="margin-bottom:4px;padding-top:10px;border-top:1.5px dashed var(--border)">
+      <label class="form-label" style="font-weight:700;color:var(--primary);font-size:13px;text-transform:uppercase;letter-spacing:.4px">Home Address (Temporary)</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;margin-left:18px;cursor:pointer;font-size:12.5px;color:var(--text-muted)"><input type="checkbox" id="hr_sameAsPerm" onchange="hrCopyPermToTemp()" style="accent-color:var(--primary);width:14px;height:14px"> Same as Permanent Address</label>
+    </div>
+    <div class="form-group"><label class="form-label">Province</label><select class="form-control" id="hr_tempProvince"><option value="">Select Province</option><option>Islamabad Capital Territory</option><option>Punjab</option><option>Sindh</option><option>Khyber Pakhtunkhwa</option><option>Balochistan</option><option>AJK</option><option>Gilgit-Baltistan</option></select></div>
+    <div class="form-group"><label class="form-label">District</label><input class="form-control" id="hr_tempDistrict" placeholder="e.g. Islamabad"></div>
+    <div class="form-group"><label class="form-label">House No.</label><input class="form-control" id="hr_tempHouseNo" placeholder="e.g. 12-A"></div>
+    <div class="form-group"><label class="form-label">Street No.</label><input class="form-control" id="hr_tempStreetNo" placeholder="e.g. Street 5"></div>
+    <div class="form-group"><label class="form-label">Sector</label><input class="form-control" id="hr_tempSector" placeholder="e.g. G-9"></div>
+    <div class="form-group"><label class="form-label">Sub-Sector</label><input class="form-control" id="hr_tempSubSector" placeholder="e.g. G-9/1"></div>
+    <div class="form-group"><label class="form-label">Village</label><input class="form-control" id="hr_tempVillage" placeholder="Village name (if applicable)"></div>
+    <div class="form-group"><label class="form-label">Society / Mohalla</label><input class="form-control" id="hr_tempSociety" placeholder="Society or mohalla"></div>
+    <div class="form-group"><label class="form-label">Latitude</label><input class="form-control" id="hr_tempLat" placeholder="e.g. 33.7215"></div>
+    <div class="form-group"><label class="form-label">Longitude</label><input class="form-control" id="hr_tempLng" placeholder="e.g. 73.0433"></div>
+    <div class="form-group"><label class="form-label">Domicile Province <span class="req">*</span></label><select class="form-control" id="hr_province" onchange="hrFillDistricts()">${_hrProvinces.map(p=>`<option>${p}</option>`).join('')}</select></div>
+    <div class="form-group"><label class="form-label">Domicile District <span class="req">*</span></label><select class="form-control" id="hr_district"><option value="">-- Select Province First --</option></select></div>
+    <div class="form-group"><label class="form-label">CNIC <span class="req">*</span></label><input class="form-control" id="hr_cnic" placeholder="XXXXX-XXXXXXX-X" maxlength="15"></div>
+    <div class="form-group"><label class="form-label">Mobile No <span class="req">*</span></label><input class="form-control" type="tel" id="hr_mobile" placeholder="03XX-XXXXXXX"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-control" type="email" id="hr_email" placeholder="name@fde.edu.pk"></div>
+    <div class="form-group"><label class="form-label">Emergency Contact Name</label><input class="form-control" id="hr_emgName" placeholder="Emergency contact name"></div>
+    <div class="form-group"><label class="form-label">Emergency Contact No</label><input class="form-control" type="tel" id="hr_emgNo" placeholder="03XX-XXXXXXX"></div>
+    <div class="form-group"><label class="form-label">AGPR Personnel No</label><input class="form-control" type="number" id="hr_agpr" placeholder="AGPR No"></div>
+    <div class="form-group"><label class="form-label">AGPR Vendor No</label><input class="form-control" type="number" id="hr_agprVendor" placeholder="AGPR Vendor No"></div>
+    <div class="form-group"><label class="form-label">NTN No</label><input class="form-control" type="number" id="hr_ntn" placeholder="NTN No"></div>
+    <div class="form-group"><label class="form-label">Basic Pay Scale (Regular) <span class="req">*</span></label><select class="form-control" id="hr_bpsRegular"><option value="">Select BPS</option>${hrBPS()}</select></div>
+    <div class="form-group"><label class="form-label">Basic Pay Scale (Time Scale)</label><select class="form-control" id="hr_bpsTime"><option value="">Select BPS</option>${hrBPS()}</select></div>
+  </div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">🏆 Administrative Experience <span style="font-size:11px;font-weight:400;color:var(--text-muted)">Select all roles held</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${adminCbs}</div>
+  </div>`;
+}
+
+// ─── TAB 1: Govt Service History ───
+function hrTab1(){
+  const empOpts=['Federal Govt.','Provincial Govt.','Semi Govt','Corporation','Authority','Autonomous Bodies'].map(e=>`<option>${e}</option>`).join('');
+  const modeOpts=['FPSC','Provincial Public Service Commission','Departmental Selection','Daily Wager / Contract Regularized','Re-instated Sacked Employee','Cabinet Committee Regularized','Absorbed from Surplus Pool'].map(m=>`<option>${m}</option>`).join('');
+  return `<div class="form-section"><div class="form-section-title">🏛 1st Entry into Government Service</div><div class="form-grid cols-2">
+    <div class="form-group"><label class="form-label">Date of 1st Appointment in Govt Service</label><input class="form-control" type="date" id="hr_govtEntryDate"></div>
+    <div class="form-group"><label class="form-label">BPS of 1st Appointment in Govt Service</label><select class="form-control" id="hr_govtBPS"><option value="">Select BPS</option>${hrBPS()}</select></div>
+    <div class="form-group"><label class="form-label">Employer of 1st Appointment</label><select class="form-control" id="hr_govtEmployer"><option value="">Select</option>${empOpts}</select></div>
+    <div class="form-group"><label class="form-label">Cadre of 1st Appointment in Govt Service</label><select class="form-control" id="hr_govtCadre"><option value="">Select</option><option>Teaching</option><option>Non-Teaching</option></select></div>
+    <div class="form-group"><label class="form-label">Designation at 1st Appointment</label><select class="form-control" id="hr_govtDesig"><option value="">Select</option>${hrDesigOpts()}</select></div>
+    <div class="form-group"><label class="form-label">Department of 1st Appointment</label><input class="form-control" id="hr_govtDept" placeholder="Department name"></div>
+    <div class="form-group span-2"><label class="form-label">Mode of 1st Appointment in Govt Service</label><select class="form-control" id="hr_govtMode"><option value="">Select</option>${modeOpts}</select></div>
+  </div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title">🇵🇰 Federal Government (FG) Employment Information</div><div class="form-grid cols-2">
+    <div class="form-group"><label class="form-label">Date of Entry into Federal Govt Services</label><input class="form-control" type="date" id="hr_fgEntryDate"></div>
+    <div class="form-group"><label class="form-label">BPS at time of entry into FG Services</label><select class="form-control" id="hr_fgBPS"><option value="">Select</option>${hrBPS()}</select></div>
+    <div class="form-group"><label class="form-label">Cadre of 1st Appointment in FG Service</label><select class="form-control" id="hr_fgCadre"><option value="">Select</option><option>Teaching</option><option>Non-Teaching</option></select></div>
+    <div class="form-group"><label class="form-label">Designation at 1st Appointment in FG Service</label><select class="form-control" id="hr_fgDesig"><option value="">Select</option>${hrDesigOpts()}</select></div>
+    <div class="form-group span-2"><label class="form-label">Department of 1st Appointment in FG Service</label><input class="form-control" id="hr_fgDept" placeholder="Department name"></div>
+  </div></div>`;
+}
+
+// ─── TAB 2: FDE Employment ───
+function hrTab2(){
+  const modeOpts=['FPSC','Departmental Selection','Daily Wager / Contract Regularized','Re-instated Sacked Employee','Cabinet Committee Regularized','Absorbed from Surplus Pool','Deputationist'].map(m=>`<option>${m}</option>`).join('');
+  const pdOpts=['Federal Govt.','Provincial Govt.','Semi Govt','Corporation','Authority','Autonomous Bodies'].map(o=>`<option>${o}</option>`).join('');
+  function yesno(name,yBlock){return `<div style="display:flex;gap:16px;margin-top:6px"><label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="${name}" value="Yes" onchange="schToggle('${yBlock}',true)"> Yes</label><label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="${name}" value="No" onchange="schToggle('${yBlock}',false)" checked> No</label></div>`;}
+  return `<div class="form-section"><div class="form-section-title">🏫 1st Entry into FDE</div>
+    <div class="form-grid cols-2" style="margin-bottom:16px">
+      <div class="form-group"><label class="form-label">Date of Initial Appointment in FDE <span class="req">*</span></label><input class="form-control" type="date" id="hr_fdeInitDate"></div>
+      <div class="form-group"><label class="form-label">Initial BPS in FDE</label><select class="form-control" id="hr_fdeInitBPS"><option value="">Select BPS</option>${hrBPS()}</select></div>
+      <div class="form-group"><label class="form-label">Cadre of Initial Appointment <span class="req">*</span></label><select class="form-control" id="hr_fdeInitCadre" onchange="hrFillInitDesig()"><option value="">Select</option><option>Teaching</option><option>Non-Teaching</option></select></div>
+      <div class="form-group"><label class="form-label">Designation of Initial Appointment</label><select class="form-control" id="hr_fdeInitDesig"><option value="">Select Cadre First</option></select></div>
+      <div class="form-group"><label class="form-label">Initial School / Office in FDE</label><select class="form-control" id="hr_fdeInitSchool"><option value="">Select Institution / Office</option>${hrInstOpts()}</select></div>
+      <div class="form-group"><label class="form-label">Initial Stream</label><select class="form-control" id="hr_fdeInitStream"><option value="">Select Stream</option><option>FG Schools</option><option>FG Colleges</option><option>Model Colleges</option><option>FDE-HQ</option></select></div>
+      <div class="form-group"><label class="form-label">Current Stream</label><select class="form-control" id="hr_fdeCurStream"><option value="">Select Stream</option><option>FG Schools</option><option>FG Colleges</option><option>Model Colleges</option><option>FDE-HQ</option></select></div>
+      <div class="form-group"><label class="form-label">Mode of Appointment in FDE <span class="req">*</span></label><select class="form-control" id="hr_fdeMode" onchange="schToggle('hrDeputBlock',this.value==='Deputationist')"><option value="">Select</option>${modeOpts}</select></div>
+    </div>
+    <div class="conditional-block" id="hrDeputBlock">
+      <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:600;color:#856404;margin-bottom:14px">Deputationist Details</div>
+      <div class="form-grid cols-2">
+        <div class="form-group"><label class="form-label">Status of Parent Department</label><select class="form-control" id="hr_pdStatus"><option value="">Select</option>${pdOpts}</select></div>
+        <div class="form-group"><label class="form-label">Name of Parent Department</label><input class="form-control" id="hr_pdName" placeholder="Parent department name"></div>
+        <div class="form-group span-2"><label class="form-label">Mode of Deputation</label><select class="form-control" id="hr_deputMode" style="max-width:300px"><option value="">Select</option><option>Wedlock Policy</option><option>General Deputation</option></select></div>
+        <div class="form-group"><label class="form-label">Advertisement</label>${yesno('hr_advert','hrAdvertDate')}<div class="conditional-block" id="hrAdvertDate" style="padding:0;border:none;background:none;margin-top:8px"><input class="form-control" type="date" id="hr_advertDt" placeholder="Date of advertisement"></div></div>
+        <div class="form-group"><label class="form-label">Test Conducted</label>${yesno('hr_test','hrTestDate')}<div class="conditional-block" id="hrTestDate" style="padding:0;border:none;background:none;margin-top:8px"><input class="form-control" type="date" id="hr_testDt" placeholder="Date of test"></div></div>
+        <div class="form-group"><label class="form-label">Interview Conducted</label>${yesno('hr_interview','hrIntDate')}<div class="conditional-block" id="hrIntDate" style="padding:0;border:none;background:none;margin-top:8px"><input class="form-control" type="date" id="hr_intDt" placeholder="Date of interview"></div></div>
+        <div class="form-group"><label class="form-label">Date of Joining FDE</label><input class="form-control" type="date" id="hr_fdeJoinDate"></div>
+        <div class="form-group"><label class="form-label">Initial Approved Tenure</label><input class="form-control" type="date" id="hr_tenure"></div>
+        <div class="form-group"><label class="form-label">Expiry Date of Last NOC</label><input class="form-control" type="date" id="hr_nocExpiry"></div>
+        <div class="form-group"><label class="form-label">Drawing Deputationist Allowance</label><div style="display:flex;gap:16px;margin-top:6px"><label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_deputAllow" value="Yes"> Yes</label><label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_deputAllow" value="No" checked> No</label></div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── TAB 3: Current Posting ───
+function hrTab3(){
+  return `<div class="form-section"><div class="form-section-title">📋 Current Employment Information</div><div class="form-grid cols-2">
+    <div class="form-group"><label class="form-label">Current Regular Designation <span class="req">*</span></label><select class="form-control" id="hr_curDesig"><option value="">Select</option>${hrDesigOpts()}</select></div>
+    <div class="form-group"><label class="form-label">Current Place of Posting <span class="req">*</span></label><select class="form-control" id="hr_curPosting"><option value="">Select Institution / Office</option>${hrInstOpts()}</select></div>
+    <div class="form-group"><label class="form-label">Date of Joining at Current Place</label><input class="form-control" type="date" id="hr_curJoinDate"></div>
+    <div class="form-group"><label class="form-label">Seniority Number</label><input class="form-control" id="hr_seniority" placeholder="e.g. 245"></div>
+    <div class="form-group span-2"><label class="form-label">Date of Superannuation <span style="font-size:11px;color:var(--text-muted)">(auto-calculated from DOB)</span></label><input class="form-control" id="hr_superannuation" readonly style="background:var(--bg);cursor:not-allowed;max-width:220px"></div>
+  </div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title">🔄 Temporary Duty / Attachment</div>
+    <div class="form-group" style="margin-bottom:14px"><label class="form-label">Working on Temporary Duty / Attachment?</label>
+      <div style="display:flex;gap:16px;margin-top:6px">
+        <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_tdaYN" value="Yes" onchange="schToggle('hrTDABlock',true)"> Yes</label>
+        <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_tdaYN" value="No" onchange="schToggle('hrTDABlock',false)" checked> No</label>
+      </div>
+    </div>
+    <div class="conditional-block" id="hrTDABlock">
+      <div class="form-group" style="margin-bottom:14px"><label class="form-label">Drawing salary from different office/school?</label>
+        <div style="display:flex;gap:16px;margin-top:6px">
+          <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_diffSalary" value="Yes" onchange="schToggle('hrDiffSalaryBlock',true)"> Yes</label>
+          <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px"><input type="radio" name="hr_diffSalary" value="No" onchange="schToggle('hrDiffSalaryBlock',false)" checked> No</label>
+        </div>
+      </div>
+      <div class="conditional-block" id="hrDiffSalaryBlock"><div class="form-grid cols-2" style="margin-bottom:12px">
+        <div class="form-group"><label class="form-label">Education Sector</label><select class="form-control" id="hr_tdaSector"><option value="">Select Sector</option><option>Urban 1</option><option>Urban 2</option><option>Sihala</option><option>Nilore</option><option>Barakahu</option><option>Tarnol</option></select></div>
+        <div class="form-group"><label class="form-label">Cluster</label><select class="form-control" id="hr_tdaCluster"><option value="">Select Cluster</option><option>Cluster 1</option><option>Cluster 2</option><option>Cluster 3</option><option>Cluster 4</option><option>Cluster 5</option><option>Cluster 6</option></select></div>
+        <div class="form-group span-2"><label class="form-label">Pay Drawing Office / School</label><select class="form-control" id="hr_tdaPayOffice"><option value="">Select Office / School</option>${hrInstOpts()}</select></div>
+      </div></div>
+      <div class="form-group"><label class="form-label">Place of Temporary Duty / Attachment</label><select class="form-control" id="hr_tdaPlace"><option value="">Select</option>${hrInstOpts()}</select></div>
+    </div>
+  </div>`;
+}
+
+// ─── TAB 4: Family Info ───
+function hrTab4(){
+  return `<div class="form-section"><div class="form-section-title">👫 Spouse Information <span style="font-size:11px;background:#e8f0fb;color:var(--primary);border-radius:4px;padding:2px 8px;margin-left:8px">Applicable if Married</span></div>
+  <div class="form-grid cols-2">
+    <div class="form-group"><label class="form-label">Spouse Name</label><input class="form-control" id="hr_spouseName" placeholder="Full name"></div>
+    <div class="form-group"><label class="form-label">Spouse CNIC</label><input class="form-control" id="hr_spouseCNIC" placeholder="XXXXX-XXXXXXX-X" maxlength="15"></div>
+    <div class="form-group"><label class="form-label">Employment Status of Spouse</label>
+      <select class="form-control" id="hr_spouseEmpStatus" onchange="schToggle('hrSpouseEmpBlock',this.value==='Employed')">
+        <option value="">Select</option><option>Housewife</option><option>Employed</option><option>Retired</option><option>Deceased</option>
+      </select>
+    </div>
+    <div class="conditional-block" id="hrSpouseEmpBlock" style="padding:0;border:none;background:none">
+      <div class="form-group"><label class="form-label">Employer Status</label><select class="form-control" id="hr_spouseEmployer"><option value="">Select</option><option>Federal Govt</option><option>Provincial Govt</option><option>Semi Govt</option><option>Corporations</option><option>Authority</option><option>Autonomous bodies</option><option>Private</option></select></div>
+      <div class="form-group" style="margin-top:12px"><label class="form-label">Department / Employer of Spouse</label><input class="form-control" id="hr_spouseDept" placeholder="Department or employer name"></div>
+    </div>
+  </div></div>
+  <div class="form-section" style="margin-top:18px;border-style:dashed"><p style="font-size:12.5px;color:var(--text-muted);padding:6px 0">Spouse fields are linked to Marital Status selected in Personal Info. Leave blank if not applicable.</p></div>`;
+}
+
+// ─── TAB 5: Qualifications ───
+function hrAcadRowHTML(idx){
+  const acadDegs=['Matric','Intermediate','Diploma','BA/BSc','BS/MS/MSc (16 Years)','MS/M.Phil (18 Years)','PhD','Post Doc'].map(d=>`<option>${d}</option>`).join('');
+  const boards=_hrBoards.map(b=>`<option>${b}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrAcadRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrAcadRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Degree / Certificate</label><select class="form-control" id="hr_aD_${idx}" onchange="hrToggleAcadFields('${idx}',this.value)">${acadDegs}</select></div>
+      <div class="form-group" id="hr_aGrp_${idx}" style="display:none"><label class="form-label">Group</label><select class="form-control" id="hr_aG_${idx}"><option value="">Select</option><option>Science</option><option>Arts</option><option>Computer Science</option></select></div>
+      <div class="form-group" id="hr_aDipSub_${idx}" style="display:none"><label class="form-label">Subject</label><select class="form-control" id="hr_aDS_${idx}"><option value="">Select</option><option>English</option><option>Urdu</option><option>Mathematics</option><option>Others</option></select></div>
+      <div class="form-group" id="hr_aSub_${idx}"><label class="form-label">Major Subject</label><select class="form-control" id="hr_aS_${idx}"><option value="">Select</option><option>English</option><option>Urdu</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Computer Science</option><option>Commerce</option><option>Economics</option><option>History</option><option>Geography</option><option>Islamic Studies</option><option>Pakistan Studies</option><option>Arts</option><option>Science</option><option>Other</option></select></div>
+      <div class="form-group"><label class="form-label">Country</label><select class="form-control" id="hr_aC_${idx}" onchange="hrCtryChange('hr_aB_${idx}','hr_aBT_${idx}',this.value)"><option>Pakistan</option><option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Germany</option><option>China</option><option>Turkey</option><option>Saudi Arabia</option><option>UAE</option><option>Other</option></select></div>
+      <div class="form-group" id="hr_aB_${idx}"><label class="form-label">Board / University</label><select class="form-control">${boards}</select></div>
+      <div class="form-group" id="hr_aBT_${idx}" style="display:none"><label class="form-label">Board / University (Specify)</label><input class="form-control" placeholder="Enter name"></div>
+      <div class="form-group"><label class="form-label">Date of Passing</label><input class="form-control" type="date" id="hr_aDate_${idx}"></div>
+    </div></div>`;
+}
+function hrProfRowHTML(idx){
+  const profDegs=['Montessori/ECE Diploma','B.Ed','M.Ed','BLIS','Post Graduate Diploma','Any Other (Please Specify)'].map(d=>`<option>${d}</option>`).join('');
+  const boards=_hrBoards.map(b=>`<option>${b}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrProfRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrProfRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Degree / Certificate</label><select class="form-control" id="hr_pD_${idx}">${profDegs}</select></div>
+      <div class="form-group"><label class="form-label">Country</label><select class="form-control" id="hr_pC_${idx}" onchange="hrCtryChange('hr_pB_${idx}','hr_pBT_${idx}',this.value)"><option>Pakistan</option><option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Other</option></select></div>
+      <div class="form-group" id="hr_pB_${idx}"><label class="form-label">Board / University / Institute</label><select class="form-control">${boards}</select></div>
+      <div class="form-group" id="hr_pBT_${idx}" style="display:none"><label class="form-label">Board / University (Specify)</label><input class="form-control" placeholder="Enter name"></div>
+      <div class="form-group"><label class="form-label">Date of Passing</label><input class="form-control" type="date" id="hr_pDate_${idx}"></div>
+    </div></div>`;
+}
+function hrTab5(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">🎓 Academic Qualifications<button type="button" onclick="hrAddAcadRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrAcadContainer">${hrAcadRowHTML(0)}</div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center">📜 Professional Qualifications<button type="button" onclick="hrAddProfRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrProfContainer">${hrProfRowHTML(0)}</div></div>`;
+}
+
+// ─── TAB 6: Career History ───
+function hrPromoRowHTML(idx){
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrPromoRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrPromoRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Mode</label><select class="form-control"><option>Promotion</option><option>Upgradation</option><option>Grant of Higher Time Scale</option></select></div>
+      <div class="form-group"><label class="form-label">Previous Designation</label><select class="form-control"><option value="">Select</option>${hrDesigOpts()}</select></div>
+      <div class="form-group"><label class="form-label">Previous BPS</label><select class="form-control"><option value="">Select</option>${hrBPS()}</select></div>
+      <div class="form-group"><label class="form-label">New Designation</label><select class="form-control"><option value="">Select</option>${hrDesigOpts()}</select></div>
+      <div class="form-group"><label class="form-label">New BPS</label><select class="form-control"><option value="">Select</option>${hrBPS()}</select></div>
+      <div class="form-group"><label class="form-label">Date of Promotion / Upgradation</label><input class="form-control" type="date"></div>
+      <div class="form-group span-2"><label class="form-label">Order / Notification No</label><input class="form-control" placeholder="e.g. FDE/Estt/2024/1234"></div>
+    </div></div>`;
+}
+function hrPostingRowHTML(idx){
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrPostingRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrPostingRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">From Institution / Office</label><select class="form-control"><option value="">Select</option>${hrInstOpts()}</select></div>
+      <div class="form-group"><label class="form-label">To Institution / Office</label><select class="form-control"><option value="">Select</option>${hrInstOpts()}</select></div>
+      <div class="form-group"><label class="form-label">Nature of Transfer / Posting</label><select class="form-control"><option>Regular</option><option>Temporary Duty</option><option>Attachment</option></select></div>
+      <div class="form-group"><label class="form-label">From Date</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">To Date</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Order / Notification Number</label><input class="form-control" placeholder="e.g. FDE/Transfer/2024/456"></div>
+    </div></div>`;
+}
+function hrTab6(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">⬆ Promotion / Upgradation History<button type="button" onclick="hrAddPromoRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrPromoContainer">${hrPromoRowHTML(0)}</div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center">🔀 Posting / Transfer History<button type="button" onclick="hrAddPostingRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrPostingContainer">${hrPostingRowHTML(0)}</div></div>`;
+}
+
+// ─── TAB 7: Training ───
+function hrTrainRowHTML(idx){
+  const areaOpts=_hrTrainAreas.map(a=>`<option>${a}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrTrainRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrTrainRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Training Area</label><select class="form-control">${areaOpts}</select></div>
+      <div class="form-group"><label class="form-label">Type of Training</label><select class="form-control" id="hr_ptType_${idx}" onchange="schToggle('hrPTCtry_${idx}',this.value==='Foreign/International')"><option>Domestic/National</option><option>Foreign/International</option></select></div>
+      <div class="conditional-block" id="hrPTCtry_${idx}" style="padding:0;border:none;background:none"><div class="form-group"><label class="form-label">Country</label><input class="form-control" placeholder="Country name"></div></div>
+      <div class="form-group"><label class="form-label">Mode of Training</label><select class="form-control"><option>Physical</option><option>Online</option><option>Hybrid</option></select></div>
+      <div class="form-group"><label class="form-label">Training Date (From)</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Training Date (To)</label><input class="form-control" type="date"></div>
+      <div class="form-group span-2"><label class="form-label">Name of Training Institute</label><input class="form-control" placeholder="Training institute name" maxlength="100"></div>
+    </div></div>`;
+}
+function hrTrainDataRowHTML(idx){
+  const areaOpts=_hrTrainAreas.map(a=>`<option>${a}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrTrainDataRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrTrainDataRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Training Area</label><select class="form-control">${areaOpts}</select></div>
+      <div class="form-group"><label class="form-label">Name of Training</label><input class="form-control" id="hr_tdName_${idx}" placeholder="Name of training program"></div>
+      <div class="form-group span-2"><label class="form-label">Name of Training Institute / Organization</label><input class="form-control" placeholder="Institute or organization name" maxlength="100"></div>
+      <div class="form-group"><label class="form-label">Type of Training</label><select class="form-control" id="hr_tdType_${idx}" onchange="schToggle('hrTDCtry_${idx}',this.value==='Foreign/International')"><option>Domestic/National</option><option>Foreign/International</option></select></div>
+      <div class="conditional-block" id="hrTDCtry_${idx}" style="padding:0;border:none;background:none"><div class="form-group"><label class="form-label">Country</label><input class="form-control" placeholder="Country name"></div></div>
+      <div class="form-group"><label class="form-label">Mode of Training</label><select class="form-control"><option>Physical</option><option>Online</option><option>Hybrid</option></select></div>
+      <div class="form-group"><label class="form-label">Training Start Date</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Training End Date</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">No. of Actual Training Days</label><input class="form-control" type="number" id="hr_tdDays_${idx}" placeholder="0" min="0"></div>
+      <div class="form-group"><label class="form-label">Credit Hours of Training</label><input class="form-control" type="number" id="hr_tdCredits_${idx}" placeholder="0" min="0"></div>
+      <div class="form-group span-2"><label class="form-label">Total Credit Hours (Last 5 Years) <span style="font-size:10px;color:var(--text-muted)">Auto-calculated</span></label><input class="form-control" id="hr_tdTotalCredits_${idx}" placeholder="Calculated" readonly style="background:var(--bg);cursor:not-allowed"></div>
+    </div></div>`;
+}
+function hrDiscRowHTML(idx){
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrDiscRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrDiscRow_${idx}" style="border:1px solid #fde8e8;border-radius:8px;padding:14px;margin-bottom:12px;position:relative;background:#fffafa">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group span-2"><label class="form-label">Charges</label><input class="form-control" placeholder="Describe the charges"></div>
+      <div class="form-group span-2"><label class="form-label">Penalty Imposed</label><select class="form-control"><option value="">Select Penalty Type</option><option>Minor Penalty (Censure, Withholding of Increments, Withholding of Promotion, Recovery from Pay)</option><option>Major Penalty (Reduction to lower post/payscale, compulsory retirement, removal from service, dismissal, Recovery of Embezzled amount)</option></select></div>
+      <div class="form-group"><label class="form-label">Date of Imposition of Penalty</label><input class="form-control" type="date"></div>
+      <div class="form-group"><label class="form-label">Office Order / Notification Number</label><input class="form-control" placeholder="e.g. FDE/Disc/2024/789"></div>
+    </div></div>`;
+}
+function hrTab7(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">🎯 Professional Training History<button type="button" onclick="hrAddTrainRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrTrainContainer">${hrTrainRowHTML(0)}</div></div>
+  <div class="form-section" style="margin-top:18px"><div class="form-section-title" style="display:flex;align-items:center">📊 Training Data<button type="button" onclick="hrAddTrainDataRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <div id="hrTrainDataContainer">${hrTrainDataRowHTML(0)}</div></div>`;
+}
+
+// ─── TAB 8: Disciplinary ───
+function hrTab8(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">⚖ Disciplinary Proceedings<button type="button" onclick="hrAddDiscRow()" style="margin-left:auto;padding:5px 14px;background:var(--danger);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px">Record all disciplinary proceedings and penalties imposed on the employee.</p>
+  <div id="hrDiscContainer">${hrDiscRowHTML(0)}</div></div>`;
+}
+
+// ─── TAB 9: ACR's ───
+function hrACRRowHTML(idx){
+  const yearOpts=Array.from({length:36},(_,i)=>`<option>${2025-i}</option>`).join('');
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrACRRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrACRRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Year</label><select class="form-control" id="hr_acrYear_${idx}">${yearOpts}</select></div>
+      <div class="form-group"><label class="form-label">ACR Type / Rating</label><select class="form-control" id="hr_acrType_${idx}"><option value="">Select Rating</option><option>Outstanding</option><option>Very Good</option><option>Good</option><option>Average</option><option>Below Average</option></select></div>
+    </div></div>`;
+}
+let _hrACRCount=1;
+function hrAddACRRow(){const c=document.getElementById('hrACRContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrACRRowHTML(_hrACRCount++);c.appendChild(d.firstElementChild);}
+function hrTab9(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">📋 Annual Confidential Reports (ACR's)<button type="button" onclick="hrAddACRRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px">Record ACR ratings for each year.</p>
+  <div id="hrACRContainer">${hrACRRowHTML(0)}</div></div>`;
+}
+
+// ─── TAB 10: Results ───
+function hrResultRowHTML(idx){
+  const rm=idx>0?`<button type="button" onclick="hrRemoveRow('hrResultRow_${idx}')" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:20px;line-height:1">✕</button>`:'';
+  return `<div id="hrResultRow_${idx}" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">${rm}
+    <div class="form-grid cols-2">
+      <div class="form-group"><label class="form-label">Class</label><select class="form-control" id="hr_resClass_${idx}" onchange="hrToggleGPA('${idx}',this.value)"><option value="">Select Class</option><option>5th</option><option>8th</option><option>SSC</option><option>HSSC</option><option>BS</option></select></div>
+      <div class="form-group"><label class="form-label">Result (%)</label><input class="form-control" type="number" id="hr_resPct_${idx}" placeholder="e.g. 85" min="0" max="100" step="0.01"></div>
+      <div class="form-group" id="hr_resGPADiv_${idx}" style="display:none"><label class="form-label">GPA <span style="font-size:11px;color:var(--text-muted)">(SSC / HSSC / BS)</span></label><input class="form-control" type="number" id="hr_resGPA_${idx}" placeholder="e.g. 3.8" min="0" max="4" step="0.01"></div>
+    </div></div>`;
+}
+let _hrResultCount=1;
+function hrAddResultRow(){const c=document.getElementById('hrResultContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrResultRowHTML(_hrResultCount++);c.appendChild(d.firstElementChild);}
+function hrToggleGPA(idx,val){const d=document.getElementById('hr_resGPADiv_'+idx);if(d)d.style.display=['SSC','HSSC','BS'].includes(val)?'':'none';}
+function hrTab10(){
+  return `<div class="form-section"><div class="form-section-title" style="display:flex;align-items:center">📊 Academic Results<button type="button" onclick="hrAddResultRow()" style="margin-left:auto;padding:5px 14px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600">+ Add More</button></div>
+  <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px">Record exam results. GPA is applicable for SSC, HSSC and BS levels.</p>
+  <div id="hrResultContainer">${hrResultRowHTML(0)}</div></div>`;
+}
+
+// ─── Add-more handlers ───
+function hrAddAcadRow(){const c=document.getElementById('hrAcadContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrAcadRowHTML(_hrAcadCount++);c.appendChild(d.firstElementChild);}
+function hrAddProfRow(){const c=document.getElementById('hrProfContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrProfRowHTML(_hrProfCount++);c.appendChild(d.firstElementChild);}
+function hrAddPromoRow(){const c=document.getElementById('hrPromoContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrPromoRowHTML(_hrPromoCount++);c.appendChild(d.firstElementChild);}
+function hrAddPostingRow(){const c=document.getElementById('hrPostingContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrPostingRowHTML(_hrPostingCount++);c.appendChild(d.firstElementChild);}
+function hrAddTrainRow(){const c=document.getElementById('hrTrainContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrTrainRowHTML(_hrTrainCount++);c.appendChild(d.firstElementChild);}
+function hrAddTrainDataRow(){const c=document.getElementById('hrTrainDataContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrTrainDataRowHTML(_hrTrainDataCount++);c.appendChild(d.firstElementChild);}
+function hrAddDiscRow(){const c=document.getElementById('hrDiscContainer');if(!c)return;const d=document.createElement('div');d.innerHTML=hrDiscRowHTML(_hrDiscCount++);c.appendChild(d.firstElementChild);}
+function hrRemoveRow(id){const el=document.getElementById(id);if(el)el.remove();}
+
+// ─── Conditional helpers ───
+function hrToggleAcadFields(idx,deg){
+  const isMatricInter=deg==='Matric'||deg==='Intermediate';
+  const isDiplomaPlus=['Diploma','BA/BSc','BS/MS/MSc (16 Years)','MS/M.Phil (18 Years)','PhD','Post Doc'].includes(deg);
+  const grp=document.getElementById('hr_aGrp_'+idx);
+  const dipSub=document.getElementById('hr_aDipSub_'+idx);
+  if(grp)grp.style.display=isMatricInter?'':'none';
+  if(dipSub)dipSub.style.display=isDiplomaPlus?'':'none';
+}
+function hrCopyPermToTemp(){
+  if(!document.getElementById('hr_sameAsPerm')?.checked)return;
+  ['Province','District','HouseNo','StreetNo','Sector','SubSector','Village','Society','Lat','Lng'].forEach(f=>{
+    const p=document.getElementById('hr_perm'+f),t=document.getElementById('hr_temp'+f);
+    if(p&&t){ if(t.tagName==='SELECT') t.value=p.value; else t.value=p.value; }
+  });
+}
+function hrCtryChange(boardDivId,boardTxtId,val){
+  const isPak=val==='Pakistan';
+  const b=document.getElementById(boardDivId),bt=document.getElementById(boardTxtId);
+  if(b)b.style.display=isPak?'':'none';
+  if(bt)bt.style.display=isPak?'none':'';
+}
+function hrFillInitDesig(){
+  const cadre=document.getElementById('hr_fdeInitCadre')?.value;
+  const sel=document.getElementById('hr_fdeInitDesig');
+  if(!sel)return;
+  const teaching=['Principal','Vice Principal','Head Mistress','Deputy Head Mistress','Asst. Head Mistress','Subject Specialist (SS)','Senior Subject Teacher (SST)','Lecturer','Primary School Teacher (PST)','Physical Education Teacher (PET)','Drawing Master','Computer Teacher'];
+  const nonTeaching=['Senior Clerk','Junior Clerk','DDO','Cashier','Naib Qasid','Driver','Chowkidar','Data Entry Operator','Steno-Typist','Lab Incharge','Lab Assistant','Electrician','Plumber'];
+  const list=cadre==='Teaching'?teaching:cadre==='Non-Teaching'?nonTeaching:[];
+  sel.innerHTML='<option value="">Select Designation</option>'+list.map(d=>`<option>${d}</option>`).join('');
+}
+function hrCalcSuperannuation(){
+  const dob=document.getElementById('hr_dob')?.value;
+  if(!dob)return;
+  const d=new Date(dob);d.setFullYear(d.getFullYear()+60);
+  const el=document.getElementById('hr_superannuation');
+  if(el)el.value=d.toISOString().split('T')[0];
+}
+function hrFillDistricts(){
+  const prov=document.getElementById('hr_province')?.value;
+  const el=document.getElementById('hr_district');
+  if(!el)return;
+  el.innerHTML=`<option value="">-- Select District --</option>`+(_hrDistricts[prov]||[]).map(d=>`<option>${d}</option>`).join('');
+}
+
+// ─── Tab navigation ───
+function renderHRTabs(){
+  const tabsEl=document.getElementById('hrAddTabs'),panelsEl=document.getElementById('hrAddPanels');
+  if(!tabsEl||!panelsEl)return;
+  if(!panelsEl.dataset.hrRendered){
+    const handlers=[hrTab0,hrTab1,hrTab2,hrTab3,hrTab4,hrTab5,hrTab6,hrTab7,hrTab8,hrTab9,hrTab10];
+    panelsEl.innerHTML=hrTabs.map((t,i)=>`<div class="ftab-content" id="hrtab-${i}">${handlers[i]?handlers[i]():''}</div>`).join('');
+    panelsEl.dataset.hrRendered='1';
+  }
+  panelsEl.querySelectorAll('.ftab-content').forEach((el,i)=>el.classList.toggle('active',i===hrTabIdx));
+  tabsEl.innerHTML=hrTabs.map((t,i)=>`<div class="ftab ${i===hrTabIdx?'active':''}" onclick="switchHRTab(${i})"><span class="ftab-num">${i+1}</span> ${t}</div>`).join('');
+  const ind=document.getElementById('hrStepsIndicator');
+  if(ind)ind.innerHTML=hrTabs.map((t,i)=>`<div class="fstep ${i===hrTabIdx?'active':i<hrTabIdx?'done':''}"></div>`).join('');
+  const bp=document.getElementById('hrBtnPrev'),bn=document.getElementById('hrBtnNext'),bs=document.getElementById('hrBtnSave');
+  if(bp)bp.style.display=hrTabIdx>0?'':'none';
+  if(bn)bn.style.display=hrTabIdx<hrTabs.length-1?'':'none';
+  if(bs)bs.style.display=hrTabIdx===hrTabs.length-1?'':'none';
+}
+function switchHRTab(i){hrTabIdx=i;renderHRTabs();}
+function navigateHRTab(dir){hrTabIdx=Math.max(0,Math.min(hrTabs.length-1,hrTabIdx+dir));renderHRTabs();}
+function openHRAdd(){
+  hrTabIdx=0;currentHREditId=null;
+  _hrAcadCount=1;_hrProfCount=1;_hrPromoCount=1;_hrPostingCount=1;_hrTrainCount=1;_hrTrainDataCount=1;_hrDiscCount=1;
+  const panelsEl=document.getElementById('hrAddPanels');
+  if(panelsEl)panelsEl.dataset.hrRendered='';
+  renderHRTabs();openModal('hrAddModal');
+}
+function saveHRDraft(){showToast('HR draft saved at '+new Date().toLocaleTimeString(),'success');}
+
+// ─── Save & Render ───
+function saveNewHR(){
+  const nm=v('hr_fullName'),cnic=v('hr_cnic');
+  if(!nm){showToast('Full Name is required.','error');switchHRTab(0);return;}
+  if(!cnic){showToast('CNIC is required.','error');switchHRTab(0);return;}
+  const rec={
+    id:hrData.length+1,fullName:nm,fatherName:v('hr_fatherName')||'',dob:v('hr_dob')||'',
+    gender:v('hr_gender')||'',marital:v('hr_marital')||'',religion:v('hr_religion')||'',
+    bloodGroup:v('hr_blood')||'',cnic:cnic,mobile:v('hr_mobile')||'',
+    province:v('hr_province')||'',district:v('hr_district')||'',
+    addrPerm:v('hr_addrPerm')||'',addrTemp:v('hr_addrTemp')||'',
+    emgName:v('hr_emgName')||'',emgNo:v('hr_emgNo')||'',
+    agpr:v('hr_agpr')||'',acprs:v('hr_acprs')||'',ntn:v('hr_ntn')||'',
+    bpsRegular:v('hr_bpsRegular')||'',bpsTime:v('hr_bpsTime')||'',
+    adminExp:Array.from(document.querySelectorAll('input[name="hr_adminExp"]:checked')).map(e=>e.value),
+    fdeMode:v('hr_fdeMode')||'',curDesig:v('hr_curDesig')||'',curPosting:v('hr_curPosting')||'',
+    curJoinDate:v('hr_curJoinDate')||'',seniority:v('hr_seniority')||'',
+    spouseName:v('hr_spouseName')||'',spouseCNIC:v('hr_spouseCNIC')||'',
+    status:'Active',_addedDate:new Date().toDateString()
+  };
+  hrData.push(rec);
+  _hrFiltered=[...hrData];
+  try{sessionStorage.setItem('hrData',JSON.stringify(hrData));}catch(e){}
+  closeModal('hrAddModal');renderHRTable();
+  const cnt=document.getElementById('hrCount');if(cnt)cnt.textContent=hrData.length;
+  showToast('HR record for "'+nm+'" saved successfully!','success');
+}
+
+let _hrFiltered=[...hrData];
+function filterHRRecords(){
+  const q=(document.getElementById('hrSearch')?.value||'').toLowerCase();
+  const bps=document.getElementById('filterHRBPS')?.value||'';
+  const desig=document.getElementById('filterHRDesig')?.value||'';
+  const status=document.getElementById('filterHRStatus')?.value||'';
+  _hrFiltered=hrData.filter(r=>{
+    const matchQ=!q||(r.fullName||'').toLowerCase().includes(q)||(r.cnic||'').includes(q)||(r.curDesig||'').toLowerCase().includes(q);
+    const matchBPS=!bps||r.bpsRegular===bps;
+    const matchDesig=!desig||r.curDesig===desig;
+    const matchStatus=!status||r.status===status;
+    return matchQ&&matchBPS&&matchDesig&&matchStatus;
+  });
+  renderHRTable();
+}
+function resetHRFilters(){
+  ['hrSearch','filterHRBPS','filterHRDesig','filterHRStatus'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  _hrFiltered=[...hrData];renderHRTable();
+}
+
+function renderHRTable(){
+  const tbody=document.getElementById('hrTbody');
+  if(!tbody)return;
+  document.getElementById('hrTableCount').textContent=_hrFiltered.length+' Records';
+  if(!_hrFiltered.length){
+    tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:48px;color:var(--text-muted)"><div style="font-size:32px;margin-bottom:10px">👤</div><div style="font-weight:600;margin-bottom:6px">No HR Records Yet</div><div style="font-size:12px">Click "Add New HR Record" to register an employee profile</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=_hrFiltered.map((r,i)=>`<tr>
+    <td>${i+1}</td>
+    <td><strong>${r.fullName}</strong><div style="font-size:11px;color:var(--text-muted)">${r.mobile||'—'}</div></td>
+    <td>${r.fatherName||'—'}</td>
+    <td><span style="font-size:12px;background:var(--primary-light);color:var(--primary);padding:2px 9px;border-radius:5px;font-weight:600">${r.bpsRegular||'—'}</span></td>
+    <td>${r.curDesig||'—'}</td>
+    <td style="font-size:12px">${r.curPosting||'—'}</td>
+    <td style="font-size:12px">${r.cnic||'—'}</td>
+    <td style="text-align:center"><div style="display:flex;gap:6px;justify-content:center">
+      <button class="action-btn" title="View Full Profile" onclick="viewHRRecord(${r.id})" style="color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="action-btn" title="Edit Record" onclick="editHRRecord(${r.id})" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      <button class="action-btn" title="Delete Record" onclick="deleteHRRecord(${r.id})" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+let _hrViewingId=null;
+function viewHRRecord(id){
+  const r=hrData.find(x=>x.id===id);if(!r)return;
+  _hrViewingId=id;
+  document.getElementById('hrViewTitle').textContent=r.fullName||'Employee Profile';
+  document.getElementById('hrViewSubtitle').textContent=(r.curDesig||'—')+' | '+(r.bpsRegular||'—')+' | '+(r.curPosting||'—');
+  const row=(label,val)=>val?`<div class="form-group"><label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">${label}</label><div style="font-size:13.5px;color:var(--text-primary);font-weight:500;padding:4px 0">${val}</div></div>`:'';
+  const sec=(title,html)=>`<div class="form-section" style="margin-bottom:16px"><div class="form-section-title" style="font-size:12px">${title}</div><div class="form-grid cols-3" style="margin-top:10px">${html}</div></div>`;
+  const adminExpBadges=(r.adminExp&&r.adminExp.length)?r.adminExp.map(e=>`<span style="font-size:11px;background:var(--primary-light);color:var(--primary);padding:3px 9px;border-radius:5px;display:inline-block;margin:2px">${e}</span>`).join(''):'—';
+  document.getElementById('hrViewBody').innerHTML=`
+    <div style="display:flex;align-items:center;gap:18px;padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#18926D);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700;flex-shrink:0">${(r.fullName||'?')[0].toUpperCase()}</div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--text-primary)">${r.fullName||'—'}</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">S/O ${r.fatherName||'—'} &nbsp;|&nbsp; CNIC: ${r.cnic||'—'} &nbsp;|&nbsp; ${r.mobile||'—'}</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <span style="background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px">${r.bpsRegular||'—'}</span>
+          <span style="background:var(--success-bg);color:var(--success);font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px">${r.status||'Active'}</span>
+          ${r.gender?`<span style="background:var(--bg);color:var(--text-secondary);font-size:11px;padding:3px 10px;border-radius:5px">${r.gender}</span>`:''}
+        </div>
+      </div>
+    </div>
+    ${sec('👤 Personal Information',
+      row('Date of Birth',r.dob)+row('Gender',r.gender)+row('Marital Status',r.marital)+
+      row('Religion',r.religion+(r.religionOther?' — '+r.religionOther:''))+row('Blood Group',r.bloodGroup)+row('NTN No',r.ntn)+
+      row('AGPR No',r.agpr)+row('ACPRS No',r.acprs)+row('Emergency Contact',r.emgName?r.emgName+' ('+r.emgNo+')':null)
+    )}
+    ${sec('📍 Address & Location',
+      row('Province',r.province)+row('District',r.district)+
+      row('Permanent Address',r.addrPerm)+row('Temporary Address',r.addrTemp)
+    )}
+    ${sec('📋 Current Employment',
+      row('Designation',r.curDesig)+row('Place of Posting',r.curPosting)+
+      row('Date of Joining',r.curJoinDate)+row('Seniority No',r.seniority)+
+      row('BPS (Regular)',r.bpsRegular)+row('BPS (Time Scale)',r.bpsTime)+
+      row('FDE Appointment Mode',r.fdeMode)+row('Spouse',r.spouseName)
+    )}
+    <div class="form-section" style="margin-bottom:16px"><div class="form-section-title" style="font-size:12px">🏆 Administrative Experience</div><div style="margin-top:10px">${adminExpBadges}</div></div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:8px;text-align:right">Record added: ${r._addedDate||'—'} &nbsp;|&nbsp; ID: ${r.id}</div>`;
+  openModal('hrViewModal');
+}
+function deleteHRRecord(id){
+  if(!confirm('Delete this HR record permanently?'))return;
+  hrData=hrData.filter(x=>x.id!==id);_hrFiltered=_hrFiltered.filter(x=>x.id!==id);
+  try{sessionStorage.setItem('hrData',JSON.stringify(hrData));}catch(e){}
+  renderHRTable();
+  const cnt=document.getElementById('hrCount');if(cnt)cnt.textContent=hrData.length;
+  showToast('HR record deleted.','warning');
+}
+let _hrEditingId=null;
+function editHRRecord(id){
+  const r=hrData.find(x=>x.id===id);if(!r)return;
+  _hrEditingId=id;
+  const bpsOpts=['BPS-01','BPS-02','BPS-03','BPS-04','BPS-05','BPS-06','BPS-07','BPS-08','BPS-09','BPS-10','BPS-11','BPS-12','BPS-13','BPS-14','BPS-15','BPS-16','BPS-17','BPS-18','BPS-19','BPS-20','BPS-21','BPS-22'].map(b=>`<option ${r.bpsRegular===b?'selected':''}>${b}</option>`).join('');
+  const statOpts=['Active','On Leave','Transferred','Retired','Suspended','Deceased'].map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('');
+  document.getElementById('hrEditBody').innerHTML=`
+    <div style="background:var(--warning-light,#fff8e6);border:1px solid var(--warning);border-radius:8px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2.5" style="width:18px;height:18px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div><div style="font-size:12.5px;font-weight:700;color:var(--warning)">Restricted Edit Mode</div>
+      <div style="font-size:12px;color:var(--text-secondary)">Full Name and CNIC are locked as one-time entry fields.</div></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group span-2"><label class="form-label">Full Name</label><input class="form-control locked" value="${r.fullName||''}" disabled></div>
+      <div class="form-group span-2"><label class="form-label">CNIC</label><input class="form-control locked" value="${r.cnic||''}" disabled></div>
+      <div class="form-group"><label class="form-label">Mobile</label><input class="form-control" id="heMobile" value="${r.mobile||''}"></div>
+      <div class="form-group"><label class="form-label">Status</label><select class="form-control" id="heStatus">${statOpts}</select></div>
+      <div class="form-group"><label class="form-label">BPS (Regular)</label><select class="form-control" id="heBPS">${bpsOpts}</select></div>
+      <div class="form-group"><label class="form-label">BPS (Time Scale)</label><input class="form-control" id="heBPSTime" value="${r.bpsTime||''}"></div>
+      <div class="form-group span-2"><label class="form-label">Current Designation</label><input class="form-control" id="heDesig" value="${r.curDesig||''}"></div>
+      <div class="form-group span-2"><label class="form-label">Place of Posting</label><input class="form-control" id="hePosting" value="${r.curPosting||''}"></div>
+      <div class="form-group"><label class="form-label">Date of Joining (Current)</label><input class="form-control" type="date" id="heJoinDate" value="${r.curJoinDate||''}"></div>
+      <div class="form-group"><label class="form-label">Seniority</label><select class="form-control" id="heSeniority"><option ${r.seniority==='Junior'?'selected':''}>Junior</option><option ${r.seniority==='Senior'?'selected':''}>Senior</option></select></div>
+    </div>`;
+  openModal('hrEditModal');
+}
+function saveHREdit(){
+  const r=hrData.find(x=>x.id===_hrEditingId);if(!r)return;
+  r.mobile=document.getElementById('heMobile').value.trim();
+  r.status=document.getElementById('heStatus').value;
+  r.bpsRegular=document.getElementById('heBPS').value;
+  r.bpsTime=document.getElementById('heBPSTime').value.trim();
+  r.curDesig=document.getElementById('heDesig').value.trim();
+  r.curPosting=document.getElementById('hePosting').value.trim();
+  r.curJoinDate=document.getElementById('heJoinDate').value;
+  r.seniority=document.getElementById('heSeniority').value;
+  try{sessionStorage.setItem('hrData',JSON.stringify(hrData));}catch(e){}
+  closeModal('hrEditModal');
+  renderHRTable();
+  showToast('HR record updated successfully.','success');
+}
+function exportHRCSV(){
+  const h=['Full Name','Father Name','CNIC','Mobile','BPS','Designation','Place of Posting','Province','District','Status'];
+  const rows=hrData.map(r=>[r.fullName,r.fatherName,r.cnic,r.mobile,r.bpsRegular,r.curDesig,r.curPosting,r.province,r.district,r.status]);
+  const csv=[h,...rows].map(r=>r.map(c=>`"${c||''}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='FDE_HR_Export.csv';a.click();
+  showToast('HR data exported as CSV.','success');
+}
+
+// ── BPS/Desig filter options init ──
+function initHRFilters(){
+  const bpsSel=document.getElementById('filterHRBPS');
+  if(bpsSel&&bpsSel.options.length<=1)_hrBPS.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bpsSel.appendChild(o);});
+  const desigSel=document.getElementById('filterHRDesig');
+  if(desigSel&&desigSel.options.length<=1)_hrDesig.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;desigSel.appendChild(o);});
+  const cnt=document.getElementById('hrCount');if(cnt)cnt.textContent=hrData.length;
+}
+document.addEventListener('DOMContentLoaded',initHRFilters);
+
+// HR page handled inside the main showPage override above
+
 // ---- ROUTE ON LOAD ----
 (function initPortal() {
   if (!fdeAuth) {
     showView('landing');
   } else if (fdeAuth.role === 'admin') {
     showView('admin');
-    setTimeout(()=>{updateDashboard();}, 100);
+    setTimeout(()=>{updateDashboard();initHRFilters();}, 100);
   } else if (fdeAuth.role === 'school') {
     initSchoolPortal();
     showView('school');
