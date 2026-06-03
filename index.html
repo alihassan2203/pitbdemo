@@ -1161,11 +1161,13 @@ select.form-control { cursor: pointer; }
         Schools
         <span class="nav-badge" id="schoolCount">—</span>
       </div>
+      <!-- STAFF NAV ITEM — temporarily hidden; uncomment to re-enable
       <div class="nav-item" onclick="showPage('staff')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Staff
         <span class="nav-badge" id="staffCount">—</span>
       </div>
+      END STAFF NAV ITEM -->
       <div class="nav-item" onclick="showPage('hr')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
         HR Records
@@ -1294,9 +1296,11 @@ select.form-control { cursor: pointer; }
             <div onclick="showPage('students')" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:9px;background:#f0eeff;cursor:pointer" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
               <span style="font-size:18px">🎓</span><div style="flex:1"><div style="font-weight:700;font-size:13px">Students</div><div style="font-size:11px;color:var(--text-muted)" id="quickStudent">—</div></div><span style="color:#5b3dc8">→</span>
             </div>
+            <!-- STAFF QUICK ACCESS — temporarily hidden; uncomment to re-enable
             <div onclick="showPage('staff')" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:9px;background:var(--success-bg);cursor:pointer" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
               <span style="font-size:18px">👤</span><div style="flex:1"><div style="font-weight:700;font-size:13px">Staff</div><div style="font-size:11px;color:var(--text-muted)" id="quickStaff">—</div></div><span style="color:var(--success)">→</span>
             </div>
+            END STAFF QUICK ACCESS -->
           </div>
         </div>
         <div class="info-card">
@@ -1306,7 +1310,7 @@ select.form-control { cursor: pointer; }
       </div>
     </div>
 
-    <!-- STAFF LISTING PAGE -->
+    <!-- STAFF LISTING PAGE — temporarily hidden; uncomment to re-enable
     <div class="page" id="page-staff">
       <div class="page-header">
         <div class="page-header-left">
@@ -1402,6 +1406,7 @@ select.form-control { cursor: pointer; }
         <div class="pagination" id="pagination"></div>
       </div>
     </div>
+    END STAFF LISTING PAGE -->
 
     <!-- ==================== SCHOOL PAGE ==================== -->
     <div class="page" id="page-schools">
@@ -1578,6 +1583,8 @@ select.form-control { cursor: pointer; }
   </div>
 </div>
 
+<!-- STAFF MODALS — temporarily hidden; uncomment all three to re-enable
+
 <!-- ===== VIEW MODAL ===== -->
 <div class="modal-overlay" id="viewModal">
   <div class="modal modal-lg" onclick="event.stopPropagation()">
@@ -1653,6 +1660,7 @@ select.form-control { cursor: pointer; }
     </div>
   </div>
 </div>
+END STAFF MODALS -->
 
 
 </div><!-- /admin-portal -->
